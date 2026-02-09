@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Rental } from '../model/RentalModel';
 import { CommonModule } from '@angular/common';
 import { RentalService } from '../service/rental';
@@ -13,7 +13,8 @@ export class Rentals implements OnInit {
   rentals: Rental[] = [];
   errorMessage: string | null = null;
 
-  constructor(private rentalService: RentalService) {}
+  constructor(private rentalService: RentalService,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadRentals();
@@ -24,6 +25,7 @@ export class Rentals implements OnInit {
     this.rentalService.getRentals().subscribe({
       next: (rentals) => {
         this.rentals = rentals;
+        this.cdr.detectChanges(); // Explicitly trigger change detection
       },
       error: (err) => {
         console.error('Failed to load rentals', err);
