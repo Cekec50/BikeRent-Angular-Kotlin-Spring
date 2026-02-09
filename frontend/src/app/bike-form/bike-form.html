@@ -14,7 +14,7 @@
               {{ errorMessage }}
             </div>
 
-            <form *ngIf="!isLoading">
+            <form>
               <!-- Type -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">
@@ -80,18 +80,11 @@
                   type="button"
                   class="btn btn-success btn-lg"
                   (click)="saveBike()"
-                  [disabled]="isLoading"
                 >
-                  {{ isLoading ? 'Saving...' : (isEditMode ? 'Update Bike' : 'Create Bike') }}
+                  {{ isEditMode ? 'Update' : 'Create' }}
                 </button>
               </div>
             </form>
-
-            <div *ngIf="isLoading" class="text-center py-5">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
 
           </div>
         </div>

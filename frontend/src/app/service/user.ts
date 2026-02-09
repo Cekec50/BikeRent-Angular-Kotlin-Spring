@@ -11,13 +11,17 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/login`, credentials).pipe(
+  login(credentials: { username: string; password: string }): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/login`, credentials).pipe(
       tap({
         next: (res) => console.log('Raw login response in service:', res),
         error: (err) => console.error('Login HTTP error in service:', err),
       }),
     );
+  }
+
+  updateUser(id: number, user: Partial<User>): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/users/${id}`, user);
   }
 
   register(user: Omit<User, 'id'>): Observable<User> {

@@ -31,8 +31,8 @@ export class Register {
     const newUser: Omit<User, 'id'> = {
       username: this.username,
       password: this.password,
-      firstname: this.firstname,
-      lastname: this.lastname,
+      firstName: this.firstname,
+      lastName: this.lastname,
       phone: this.phone,
       email: this.email,
       isAdmin: false,

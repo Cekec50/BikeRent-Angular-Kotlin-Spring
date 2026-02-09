@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { UserService } from '../service/user';
+import { AuthService } from '../service/auth';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -17,27 +18,20 @@ export class Login {
   constructor(
     private router: Router,
     private userService: UserService,
+    private authService: AuthService,
   ) {}
 
   login() {
-    console.log('Sending login request with:', {
-      username: this.username,
-      password: this.password ? '***' : '(empty)',
-    });
-
     this.userService
       .login({ username: this.username, password: this.password })
       .subscribe({
-        next: (response) => {
-          console.log('Login response from backend:', response);
+        next: (user) => {
+          this.authService.setCurrentUser(user);
           this.router.navigate(['/bikes']);
         },
         error: (error) => {
           console.error('Login failed (backend error):', error);
           // TODO: show an error message to the user
-        },
-        complete: () => {
-          console.log('Login request completed');
         },
       });
   }

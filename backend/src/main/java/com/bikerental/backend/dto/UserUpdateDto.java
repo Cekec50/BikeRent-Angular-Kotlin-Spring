@@ -1,50 +1,19 @@
-package com.bikerental.backend.model;
+package com.bikerental.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "\"user\"")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserUpdateDto {
     private String username;
-
-    @Column(nullable = false)
     private String password;
-
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
     
-    @Column(name = "is_admin")
-    private boolean isAdmin;
-
-    public User() {
-    }
-
-    public User(String username, String password, String firstName, String lastName, String phone, String email, boolean isAdmin) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.isAdmin = isAdmin;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @JsonProperty("isAdmin")
+    private Boolean isAdmin;
 
     public String getUsername() {
         return username;
@@ -94,13 +63,11 @@ public class User {
         this.email = email;
     }
 
-    @JsonProperty("isAdmin")
-    public boolean isAdmin() {
+    public Boolean getIsAdmin() {
         return isAdmin;
     }
 
-    @JsonProperty("isAdmin")
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 }

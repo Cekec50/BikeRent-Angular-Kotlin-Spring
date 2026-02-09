@@ -1,6 +1,7 @@
 package com.bikerental.backend.controller;
 
 import com.bikerental.backend.dto.LoginRequest;
+import com.bikerental.backend.dto.UserUpdateDto;
 import com.bikerental.backend.model.User;
 import com.bikerental.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,26 @@ public class UserController {
         savedUser.setPassword(null);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserUpdateDto userDetails) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    if (userDetails.getUsername() != null) user.setUsername(userDetails.getUsername());
+                    if (userDetails.getPassword() != null) user.setPassword(userDetails.getPassword());
+                    if (userDetails.getFirstName() != null) user.setFirstName(userDetails.getFirstName());
+                    if (userDetails.getLastName() != null) user.setLastName(userDetails.getLastName());
+                    if (userDetails.getPhone() != null) user.setPhone(userDetails.getPhone());
+                    if (userDetails.getEmail() != null) user.setEmail(userDetails.getEmail());
+                    
+                    // Note: isAdmin is not updated here to prevent accidental role changes via profile update.
+                    // If admin status update is required, it should be handled carefully (e.g. separate endpoint or explicit check).
+
+                    User updatedUser = userRepository.save(user);
+                    updatedUser.setPassword(null); // Don't return password
+                    return ResponseEntity.ok(updatedUser);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

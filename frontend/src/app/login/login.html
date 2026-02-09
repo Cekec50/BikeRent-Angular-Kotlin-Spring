@@ -16,29 +16,31 @@
               <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
               <p class="text-black-50 mb-5">Please enter your login and password!</p>
 
-              <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input
-                  type="email"
-                  id="typeEmailX"
-                  class="form-control form-control-lg"
-                  placeholder="Email"
-                  [(ngModel)]="username"
-                />
-              </div>
+              <form (ngSubmit)="login()">
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                  <input
+                    type="email"
+                    id="typeEmailX"
+                    class="form-control form-control-lg"
+                    placeholder="Email"
+                    [(ngModel)]="username"
+                    name="username"
+                  />
+                </div>
 
-              <div data-mdb-input-init class="form-outline form-white mb-4">
-                <input
-                  type="password"
-                  id="typePasswordX"
-                  class="form-control form-control-lg"
-                  placeholder="Password"
-                  [(ngModel)]="password"
-                />
-              </div>
+                <div data-mdb-input-init class="form-outline form-white mb-4">
+                  <input
+                    type="password"
+                    id="typePasswordX"
+                    class="form-control form-control-lg"
+                    placeholder="Password"
+                    [(ngModel)]="password"
+                    name="password"
+                  />
+                </div>
 
-
-              <button data-mdb-button-init data-mdb-ripple-init class="btn  btn-lg px-5 bg-yellow" type="submit" (click)="login()">Login</button>
-
+                <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg px-5 bg-yellow" type="submit">Login</button>
+              </form>
 
             </div>
 

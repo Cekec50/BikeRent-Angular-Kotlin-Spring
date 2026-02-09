@@ -16,3 +16,15 @@ CREATE TABLE IF NOT EXISTS bike (
     status INT,
     location VARCHAR(255)
 );
+
+CREATE TABLE IF NOT EXISTS rental (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    bike_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    end_time TIMESTAMP NOT NULL,
+    total_price DOUBLE NOT NULL,
+    photo_url VARCHAR(255),
+    FOREIGN KEY (bike_id) REFERENCES bike(id),
+    FOREIGN KEY (user_id) REFERENCES "user"(id)
+);

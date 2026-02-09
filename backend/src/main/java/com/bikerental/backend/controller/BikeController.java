@@ -21,4 +21,31 @@ public class BikeController {
         List<Bike> bikes = bikeRepository.findAll();
         return ResponseEntity.ok(bikes);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Bike> getBikeById(@PathVariable Long id) {
+        return bikeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Bike> createBike(@RequestBody Bike bike) {
+        Bike savedBike = bikeRepository.save(bike);
+        return ResponseEntity.ok(savedBike);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Bike> updateBike(@PathVariable Long id, @RequestBody Bike bikeDetails) {
+        return bikeRepository.findById(id)
+                .map(bike -> {
+                    bike.setType(bikeDetails.getType());
+                    bike.setPrice(bikeDetails.getPrice());
+                    bike.setStatus(bikeDetails.getStatus());
+                    bike.setLocation(bikeDetails.getLocation());
+                    Bike updatedBike = bikeRepository.save(bike);
+                    return ResponseEntity.ok(updatedBike);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

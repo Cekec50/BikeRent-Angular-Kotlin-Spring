@@ -1,3 +1,7 @@
+<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+  {{ errorMessage }}
+</div>
+
 <div class="row gx-4 gx-lg-5 justify-content-center">
 <div class="col mb-5 " *ngFor="let rental of rentals" style="flex: 0 0 670px;">
   <div class="card h-100">
@@ -7,7 +11,7 @@
       <!-- IMAGE -->
       <div class="col-3 d-flex align-items-center justify-content-center p-0 ">
         <img
-          [src]="rental.photoUrl"
+          [src]="rental.photoUrl || 'assets/images/parked-bike.png'"
           alt="Bike photo"
           class="rental-image"
         />
@@ -25,7 +29,7 @@
 
           <p class="mb-1">
             <strong>Name:</strong>
-            {{ rental.user.firstname }} {{ rental.user.lastname }}<br>
+            {{ rental.user.firstName }} {{ rental.user.lastName }}<br>
 
             <strong>Username:</strong> {{ rental.user.username }}<br>
             <strong>Email:</strong> {{ rental.user.email }}<br>

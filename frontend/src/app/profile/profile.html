@@ -1,4 +1,4 @@
-<section class="py-5">
+<section class="py-5" *ngIf="user">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-6 col-md-8">
@@ -10,9 +10,13 @@
               My Profile
             </h4>
 
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
+
             <form>
 
-              <!-- Full name -->
+              <!-- First name -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">
                   First Name
@@ -20,10 +24,11 @@
                 <input
                   type="text"
                   class="form-control"
-                  [value]="user.firstname"
+                  [(ngModel)]="user.firstName"
+                  name="firstName"
                 />
               </div>
-              <!-- Full name -->
+              <!-- Last name -->
               <div class="mb-3">
                 <label class="form-label fw-semibold">
                   Last Name
@@ -31,7 +36,8 @@
                 <input
                   type="text"
                   class="form-control"
-                  [value]="user.lastname"
+                  [(ngModel)]="user.lastName"
+                  name="lastName"
                 />
               </div>
 
@@ -43,7 +49,8 @@
                 <input
                   type="text"
                   class="form-control"
-                  [value]="user.username"
+                  [(ngModel)]="user.username"
+                  name="username"
                 />
               </div>
 
@@ -55,7 +62,8 @@
                 <input
                   type="email"
                   class="form-control"
-                  [value]="user.email"
+                  [(ngModel)]="user.email"
+                  name="email"
                 />
               </div>
 
@@ -67,7 +75,8 @@
                 <input
                   type="tel"
                   class="form-control"
-                  [value]="user.phone"
+                  [(ngModel)]="user.phone"
+                  name="phone"
                 />
               </div>
 
@@ -81,6 +90,8 @@
                 <input
                   type="password"
                   class="form-control"
+                  [(ngModel)]="newPassword"
+                  name="newPassword"
                   placeholder="Leave empty to keep current password"
                 />
               </div>
@@ -93,12 +104,14 @@
                 <input
                   type="password"
                   class="form-control"
+                  [(ngModel)]="confirmPassword"
+                  name="confirmPassword"
                 />
               </div>
 
               <!-- Actions -->
               <div class="d-grid">
-                <button type="button" class="btn btn-success btn-lg">
+                <button type="button" class="btn btn-success btn-lg" (click)="saveChanges()">
                   Save changes
                 </button>
               </div>

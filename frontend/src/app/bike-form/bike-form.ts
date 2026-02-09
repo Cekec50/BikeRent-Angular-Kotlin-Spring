@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Bike } from '../model/BikeModel';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -21,13 +21,13 @@ export class BikeForm implements OnInit {
   };
   bikeId?: number;
   isEditMode = false;
-  isLoading = false;
   errorMessage: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private bikeService: BikeService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -45,17 +45,15 @@ export class BikeForm implements OnInit {
   }
 
   loadBike(id: number): void {
-    this.isLoading = true;
     this.bikeService.getBikeById(id).subscribe({
       next: (bike) => {
         this.bike = bike;
-        this.bikeId = bike.id;
-        this.isLoading = false;
+        this.bikeId = bike.id;  
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load bike', err);
         this.errorMessage = 'Failed to load bike data';
-        this.isLoading = false;
       },
     });
   }
@@ -66,7 +64,6 @@ export class BikeForm implements OnInit {
       return;
     }
 
-    this.isLoading = true;
     this.errorMessage = null;
 
     if (this.isEditMode && this.bikeId) {
@@ -79,7 +76,6 @@ export class BikeForm implements OnInit {
         error: (err) => {
           console.error('Failed to update bike', err);
           this.errorMessage = 'Failed to update bike';
-          this.isLoading = false;
         },
       });
     } else {
@@ -93,7 +89,6 @@ export class BikeForm implements OnInit {
         error: (err) => {
           console.error('Failed to create bike', err);
           this.errorMessage = 'Failed to create bike';
-          this.isLoading = false;
         },
       });
     }
