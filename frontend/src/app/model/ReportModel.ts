@@ -3,5 +3,4 @@ export interface Report {
   bikeId: number;
   description: string;
   photoUrl: string;
-  status: 'OPEN' | 'IN_REPAIR' | 'RESOLVED';
 }

@@ -28,3 +28,11 @@ CREATE TABLE IF NOT EXISTS rental (
     FOREIGN KEY (bike_id) REFERENCES bike(id),
     FOREIGN KEY (user_id) REFERENCES "user"(id)
 );
+
+CREATE TABLE IF NOT EXISTS report (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    bike_id BIGINT NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    photo_url VARCHAR(255),
+    FOREIGN KEY (bike_id) REFERENCES bike(id)
+);

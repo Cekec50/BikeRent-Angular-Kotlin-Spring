@@ -20,3 +20,8 @@ INSERT INTO rental (bike_id, user_id, start_time, end_time, total_price, photo_u
 (5, 5, '2023-10-30T15:00:00', '2023-10-30T18:00:00', 54.0, 'https://example.com/photo4.jpg'),
 (1, 3, '2023-11-01T10:00:00', '2023-11-01T14:00:00', 60.0, 'https://example.com/photo5.jpg'),
 (6, 2, '2023-11-02T12:00:00', '2023-11-02T13:00:00', 10.0, 'https://example.com/photo6.jpg');
+
+INSERT INTO report (bike_id, description, photo_url) VALUES
+(4, 'Flat tire', 'https://example.com/report1.jpg'),
+(2, 'Broken chain', 'https://example.com/report2.jpg'),
+(1, 'Scratched frame', 'https://example.com/report3.jpg');
