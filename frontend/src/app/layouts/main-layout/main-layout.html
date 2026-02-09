@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-blue sticky-top py-2">
+  <div class="container px-1 px-lg-1">
+    <a class="navbar-brand brand-logo" routerLink="/bikes">BikeRent</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="/bikes" routerLinkActive="active">Bikes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="/rentals" routerLinkActive="active">Rentals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="/reports" routerLinkActive="active">Reports</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="/profile" routerLinkActive="active">Profile</a>
+        </li>
+      </ul>
+
+        
+
+      <button class="btn btn-outline-light" (click)="logout()">
+        Log Out
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4 " >
+  <router-outlet></router-outlet>
+</div>

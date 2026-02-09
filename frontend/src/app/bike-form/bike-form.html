@@ -1,0 +1,102 @@
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+
+            <h4 class="text-center mb-4 fw-bold">
+              {{ isEditMode ? 'Edit Bike #' + bikeId : 'Add New Bike' }}
+            </h4>
+
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
+
+            <form *ngIf="!isLoading">
+              <!-- Type -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">
+                  Type <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="bike.type"
+                  name="type"
+                  required
+                />
+              </div>
+
+              <!-- Price -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">
+                  Price (RSD/min)
+                </label>
+                <input
+                  type="number"
+                  class="form-control"
+                  [(ngModel)]="bike.price"
+                  name="price"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+
+              <!-- Location -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">
+                  Current location <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="bike.location"
+                  name="location"
+                  required
+                />
+              </div>
+
+              <!-- Status -->
+              <div class="mb-3">
+                <label class="form-label fw-semibold">
+                  Status
+                </label>
+                <select
+                  class="form-select"
+                  [(ngModel)]="bike.status"
+                  name="status"
+                >
+                  <option [value]="1">Available</option>
+                  <option [value]="0">Unavailable</option>
+                  <option [value]="-1">Removed</option>
+                </select>
+              </div>
+
+              <!-- Actions -->
+              <div class="d-grid py-2">
+                <button
+                  type="button"
+                  class="btn btn-success btn-lg"
+                  (click)="saveBike()"
+                  [disabled]="isLoading"
+                >
+                  {{ isLoading ? 'Saving...' : (isEditMode ? 'Update Bike' : 'Create Bike') }}
+                </button>
+              </div>
+            </form>
+
+            <div *ngIf="isLoading" class="text-center py-5">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
