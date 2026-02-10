@@ -1,8 +1,13 @@
 package com.bikerental.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class LoginRequest {
     private String username;
     private String password;
+    
+    @JsonProperty("isAdmin")
+    private boolean isAdmin;
 
     public String getUsername() {
         return username;
@@ -18,5 +23,13 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

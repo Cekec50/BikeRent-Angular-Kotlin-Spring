@@ -1,6 +1,7 @@
 package com.bikerental.backend.controller;
 
 import com.bikerental.backend.dto.LoginRequest;
+import com.bikerental.backend.dto.RegisterRequest;
 import com.bikerental.backend.dto.UserUpdateDto;
 import com.bikerental.backend.model.User;
 import com.bikerental.backend.repository.UserRepository;
@@ -28,15 +29,24 @@ public class UserController {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             System.out.println("User found: " + user.getUsername());
-            System.out.println("Stored password: " + user.getPassword());
-            System.out.println("Provided password: " + loginRequest.getPassword());
             
-            // In a real application, you should use a password encoder (e.g., BCrypt)
-            // and not store plain text passwords.
+            // Check password
             if (user.getPassword().equals(loginRequest.getPassword())) {
                 System.out.println("Password match!");
-                // Return user details or a JWT token here.
-                // For simplicity, we are returning the user object, but be careful not to expose sensitive data like password.
+                
+                // Check role based on login source
+                if (loginRequest.isAdmin()) {
+                    // Web app login (Admin only)
+                    if (!user.isAdmin()) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied: Admins only");
+                    }
+                } else {
+                    // Android app login (Non-admin only)
+                    if (user.isAdmin()) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied: Users only");
+                    }
+                }
+
                 user.setPassword(null); // Don't send the password back
                 return ResponseEntity.ok(user);
             } else {
@@ -50,17 +60,24 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody User newUser) {
-        System.out.println("Register attempt for username: " + newUser.getUsername());
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+        System.out.println("Register attempt for username: " + registerRequest.getUsername());
 
-        if (userRepository.findByUsername(newUser.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(registerRequest.getUsername()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
 
-        // Ensure ID is null so it gets auto-generated
-        newUser.setId(null);
-        // Default to non-admin if not specified (though frontend sends false)
-        // newUser.setAdmin(false); 
+        User newUser = new User();
+        newUser.setUsername(registerRequest.getUsername());
+        newUser.setPassword(registerRequest.getPassword());
+        newUser.setFirstName(registerRequest.getFirstName());
+        newUser.setLastName(registerRequest.getLastName());
+        newUser.setEmail(registerRequest.getEmail());
+        newUser.setPhone(registerRequest.getPhone());
+        
+        // Use the isAdmin flag from the request, default to false if null
+        boolean isAdmin = registerRequest.getIsAdmin() != null && registerRequest.getIsAdmin();
+        newUser.setAdmin(isAdmin);
 
         User savedUser = userRepository.save(newUser);
         

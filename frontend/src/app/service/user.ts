@@ -11,7 +11,7 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  login(credentials: { username: string; password: string }): Observable<User> {
+  login(credentials: { username: string; password: string; isAdmin?: boolean }): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/login`, credentials).pipe(
       tap({
         next: (res) => console.log('Raw login response in service:', res),

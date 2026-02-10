@@ -9,7 +9,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.bikerentandroid.api.ApiClient
+import com.example.bikerentandroid.api.LoginRequest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginFragment : Fragment() {
 
@@ -42,19 +48,32 @@ class LoginFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // TODO: Replace with real authentication (API / DB)
-            fakeLoginSuccess(username)
+            loginButton.isEnabled = false
+            lifecycleScope.launch {
+                try {
+                    val response = withContext(Dispatchers.IO) {
+                        ApiClient.authApi.login(LoginRequest(username, password, isAdmin = false))
+                    }
+                    if (!isAdded) return@launch
+                    if (response.isSuccessful) {
+                        findNavController().navigate(R.id.action_loginFragment_to_mapFragment)
+                    } else {
+                        val errorMsg = response.errorBody()?.string() ?: "Login failed"
+                        context?.let { Toast.makeText(it, errorMsg, Toast.LENGTH_SHORT).show() }
+                    }
+                } catch (e: Exception) {
+                    if (isAdded) {
+                        context?.let {
+                            Toast.makeText(it, "Error: ${e.message ?: "Network error"}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } finally {
+                    if (isAdded) loginButton.isEnabled = true
+                }
+            }
         }
-        // Navigate to registrationFragment on click
         signUpTextView.setOnClickListener {
             findNavController().navigate(R.id.registerFragment)
         }
-    }
-
-    private fun fakeLoginSuccess(username: String) {
-        // Later you can store username in SharedPreferences or ViewModel
-        findNavController().navigate(
-            R.id.action_loginFragment_to_mapFragment
-        )
     }
 }

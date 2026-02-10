@@ -39,6 +39,10 @@
                   />
                 </div>
 
+                <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+                  {{ errorMessage }}
+                </div>
+
                 <button data-mdb-button-init data-mdb-ripple-init class="btn btn-lg px-5 bg-yellow" type="submit">Login</button>
               </form>
 

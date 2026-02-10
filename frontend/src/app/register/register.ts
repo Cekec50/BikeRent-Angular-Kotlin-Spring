@@ -35,7 +35,7 @@ export class Register {
       lastName: this.lastname,
       phone: this.phone,
       email: this.email,
-      isAdmin: false,
+      isAdmin: true, // Web app is for admins; Android app sends false for regular users
     };
 
     this.userService.register(newUser).subscribe({
