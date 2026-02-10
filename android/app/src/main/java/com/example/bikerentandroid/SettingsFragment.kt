@@ -25,15 +25,17 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val editProfileTextView = view.findViewById<TextView>(R.id.editProfileTextView)
+        val changePasswordRow = view.findViewById<View>(R.id.changePasswordRow)
         val historyTextView = view.findViewById<TextView>(R.id.historyTextView)
         val logOutTextView = view.findViewById<TextView>(R.id.logOutTextView)
 
 
-        // Navigate to registrationFragment on click
         editProfileTextView.setOnClickListener {
             findNavController().navigate(R.id.editProfileFragment)
         }
-        // Navigate to registrationFragment on click
+        changePasswordRow.setOnClickListener {
+            findNavController().navigate(R.id.changePasswordFragment)
+        }
         historyTextView.setOnClickListener {
             findNavController().navigate(R.id.historyFragment)
         }

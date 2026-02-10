@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.45"/>
+        app:layout_constraintHeight_percent="0.40"/>
 
     <!-- App name -->
     <TextView
@@ -141,6 +141,31 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Edit profile"
+                android:textColor="#000000"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_right"
+                android:contentDescription="Arrow" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/changePasswordRow"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp">
+
+            <TextView
+                android:id="@+id/changePasswordTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/change_password"
                 android:textColor="#000000"
                 android:textSize="14sp" />
 

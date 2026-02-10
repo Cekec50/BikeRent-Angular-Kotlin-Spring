@@ -71,6 +71,10 @@
         android:id="@+id/historyFragment"
         android:name="com.example.bikerentandroid.HistoryFragment"
         android:label="History" />
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.example.bikerentandroid.ChangePasswordFragment"
+        android:label="Change password" />
 
 
 </navigation>
