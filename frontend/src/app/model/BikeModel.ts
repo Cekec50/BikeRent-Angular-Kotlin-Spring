@@ -3,5 +3,7 @@ export interface Bike {
   type: string;
   price: number;
   location: string;
-  status: -1 | 0 | 1 ;
+  latitude: number;
+  longitude: number;
+  status: -1 | 0 | 1;
 }

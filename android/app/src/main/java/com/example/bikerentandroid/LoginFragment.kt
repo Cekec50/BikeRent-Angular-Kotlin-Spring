@@ -56,6 +56,9 @@ class LoginFragment : Fragment() {
                     }
                     if (!isAdded) return@launch
                     if (response.isSuccessful) {
+                        response.body()?.let { user ->
+                            SessionManager.saveUser(requireContext(), user)
+                        }
                         findNavController().navigate(R.id.action_loginFragment_to_mapFragment)
                     } else {
                         val errorMsg = response.errorBody()?.string() ?: "Login failed"

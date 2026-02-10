@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS bike (
     type VARCHAR(255),
     price DOUBLE,
     status INT,
-    location VARCHAR(255)
+    location VARCHAR(255),
+    latitude DOUBLE,
+    longitude DOUBLE
 );
 
 CREATE TABLE IF NOT EXISTS rental (
@@ -34,5 +36,17 @@ CREATE TABLE IF NOT EXISTS report (
     bike_id BIGINT NOT NULL,
     description VARCHAR(255) NOT NULL,
     photo_url VARCHAR(255),
+    FOREIGN KEY (bike_id) REFERENCES bike(id)
+);
+
+CREATE TABLE IF NOT EXISTS history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    bike_id BIGINT NOT NULL,
+    start_time TIMESTAMP,
+    end_time TIMESTAMP,
+    total_price DOUBLE,
+    duration BIGINT,
+    FOREIGN KEY (user_id) REFERENCES "user"(id),
     FOREIGN KEY (bike_id) REFERENCES bike(id)
 );

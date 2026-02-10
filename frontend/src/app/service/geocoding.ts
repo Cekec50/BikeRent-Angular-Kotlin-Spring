@@ -1,0 +1,57 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+
+export interface GeocodingResult {
+  lat: number;
+  lon: number;
+  displayName?: string;
+}
+
+const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+
+/** Response from Nominatim API (single result). */
+interface NominatimPlace {
+  lat: string;
+  lon: string;
+  display_name?: string;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class GeocodingService {
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Geocode an address string to latitude and longitude using Nominatim (OpenStreetMap).
+   * Nominatim requires a unique User-Agent; use your app name.
+   */
+  geocode(address: string): Observable<GeocodingResult> {
+    if (!address?.trim()) {
+      throw new Error('Address is required');
+    }
+    const params = new HttpParams()
+      .set('q', address.trim())
+      .set('format', 'json')
+      .set('limit', '1');
+    const headers = {
+      'User-Agent': 'BikeRent/1.0 (Angular admin app; contact@example.com)',
+    };
+    return this.http
+      .get<NominatimPlace[]>(NOMINATIM_URL, { params, headers })
+      .pipe(
+        map((results) => {
+          if (!results?.length) {
+            throw new Error('Address not found');
+          }
+          const first = results[0];
+          return {
+            lat: Number(first.lat),
+            lon: Number(first.lon),
+            displayName: first.display_name,
+          };
+        }),
+      );
+  }
+}

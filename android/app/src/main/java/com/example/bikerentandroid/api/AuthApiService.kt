@@ -1,17 +1,18 @@
 package com.example.bikerentandroid.api
 
+import com.example.bikerentandroid.model.User
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-/** API service for login and register. Adjust paths and DTOs to match your backend. */
+/** API service for login and register. Backend returns User on success. */
 interface AuthApiService {
 
     @POST("login")
-    suspend fun login(@Body request: LoginRequest): Response<LoginResponse>
+    suspend fun login(@Body request: LoginRequest): Response<User>
 
     @POST("register")
-    suspend fun register(@Body request: RegisterRequest): Response<LoginResponse>
+    suspend fun register(@Body request: RegisterRequest): Response<User>
 }
 
 data class RegisterRequest(
@@ -30,8 +31,3 @@ data class LoginRequest(
     val isAdmin: Boolean
 )
 
-data class LoginResponse(
-    val token: String? = null,
-    val userId: String? = null,
-    val message: String? = null
-)

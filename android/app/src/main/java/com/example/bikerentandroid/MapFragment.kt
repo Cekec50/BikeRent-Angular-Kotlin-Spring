@@ -3,15 +3,19 @@ package com.example.bikerentandroid
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.example.bikerentandroid.api.ApiClient
 import com.example.bikerentandroid.model.Bike
 import com.example.bikerentandroid.model.Parking
 import com.example.bikerentandroid.ui.BikeInfoWindow
 import com.example.bikerentandroid.ui.ParkingInfoWindow
+import kotlinx.coroutines.launch
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.XYTileSource
 import org.osmdroid.util.GeoPoint
@@ -82,16 +86,33 @@ class MapFragment : Fragment() {
             )
         }
 
-        addBikeMarkers()
+        loadBikesFromBackend()
         addParkingMarkers()
 
         return view
     }
 
-    private fun addBikeMarkers() {
-        for (bike in getBikeData()) {
+    private fun loadBikesFromBackend() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = ApiClient.bikeApi.getAllBikes()
+                if (response.isSuccessful) {
+                    val bikes = response.body().orEmpty()
+                    addBikeMarkers(bikes)
+                } else {
+                    Log.e("MapFragment", "Failed to load bikes: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("MapFragment", "Error loading bikes", e)
+            }
+        }
+    }
+
+    private fun addBikeMarkers(bikes: List<Bike>) {
+        for (bike in bikes) {
+            val geoPoint = bike.toGeoPoint() ?: continue
             val marker = Marker(mapView)
-            marker.position = bike.location
+            marker.position = geoPoint
             marker.icon = ContextCompat.getDrawable(
                 requireContext(),
                 R.drawable.ic_bike_pin
@@ -111,6 +132,7 @@ class MapFragment : Fragment() {
             }
             mapView.overlays.add(marker)
         }
+        mapView.invalidate()
     }
 
     private fun addParkingMarkers() {
@@ -136,12 +158,6 @@ class MapFragment : Fragment() {
             mapView.overlays.add(marker)
         }
     }
-
-    private fun getBikeData(): List<Bike> = listOf(
-        Bike(1, GeoPoint(44.8176, 20.4569), "Mountain Bike", 150, "Kalemegdan (100m)"),
-        Bike(2, GeoPoint(44.8185, 20.4585), "City Bike", 120, "Knez Mihailova (50m)"),
-        Bike(3, GeoPoint(44.8150, 20.4520), "Electric Bike", 250, "Sava Park (150m)")
-    )
 
     private fun getParkings(): List<Parking> = listOf(
         Parking(1, GeoPoint(44.8180, 20.4575), "Kalemegdan Parking"),

@@ -43,6 +43,8 @@ public class BikeController {
                     bike.setPrice(bikeDetails.getPrice());
                     bike.setStatus(bikeDetails.getStatus());
                     bike.setLocation(bikeDetails.getLocation());
+                    bike.setLatitude(bikeDetails.getLatitude());
+                    bike.setLongitude(bikeDetails.getLongitude());
                     Bike updatedBike = bikeRepository.save(bike);
                     return ResponseEntity.ok(updatedBike);
                 })
