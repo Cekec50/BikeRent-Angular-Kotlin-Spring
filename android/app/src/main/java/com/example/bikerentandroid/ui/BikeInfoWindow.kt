@@ -22,7 +22,7 @@ class BikeInfoWindow(
             "Type: ${bike.type.orEmpty()}"
 
         mView.findViewById<TextView>(R.id.price).text =
-            "Price: ${bike.price?.let { "%.0f".format(it) }.orEmpty()} RSD/hour"
+            "Price: ${bike.price?.let { "%.0f".format(it) }.orEmpty()} RSD/min"
 
         mView.findViewById<TextView>(R.id.nearestParking).text =
             "Location: ${bike.location.orEmpty()}"

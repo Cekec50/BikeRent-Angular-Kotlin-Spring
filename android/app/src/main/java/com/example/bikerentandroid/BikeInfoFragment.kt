@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.bikerentandroid.api.ApiClient
 import com.example.bikerentandroid.model.Bike
 import com.example.bikerentandroid.model.Ride
+import com.example.bikerentandroid.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -110,7 +111,8 @@ class BikeInfoFragment : Fragment() {
             return
         }
         val startTime = java.time.LocalDateTime.now().toString()
-        val ride = Ride(startTime = startTime, bikeId = bike.id, userId = userId)
+        val userRef = User(id = userId, username = null, firstName = null, lastName = null, phone = null, email = null)
+        val ride = Ride(user = userRef, bike = bike, startTime = startTime)
         viewLifecycleOwner.lifecycleScope.launch {
             val response = withContext(Dispatchers.IO) {
                 ApiClient.rideApi.startRide(ride)
@@ -118,12 +120,12 @@ class BikeInfoFragment : Fragment() {
             if (!isAdded) return@launch
             if (response.isSuccessful) {
                 val startTimeMillis = System.currentTimeMillis()
-                val pricePerHour = (bike.price ?: 0.0).toFloat()
+                val pricePerMinute = (bike.price ?: 0.0).toFloat()
                 findNavController().navigate(
                     R.id.action_bikeInfoFragment_to_rideFragment,
                     bundleOf(
                         "startTimeMillis" to startTimeMillis,
-                        "pricePerHour" to pricePerHour
+                        "pricePerMinute" to pricePerMinute
                     )
                 )
             } else {

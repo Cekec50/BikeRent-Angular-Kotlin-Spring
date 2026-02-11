@@ -39,3 +39,12 @@ CREATE TABLE IF NOT EXISTS history (
     FOREIGN KEY (user_id) REFERENCES "user"(id),
     FOREIGN KEY (bike_id) REFERENCES bike(id)
 );
+
+CREATE TABLE IF NOT EXISTS ride (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    bike_id BIGINT NOT NULL,
+    start_time TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES "user"(id),
+    FOREIGN KEY (bike_id) REFERENCES bike(id)
+);

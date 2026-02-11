@@ -70,7 +70,7 @@
             android:name="startTimeMillis"
             app:argType="long" />
         <argument
-            android:name="pricePerHour"
+            android:name="pricePerMinute"
             app:argType="float" />
     </fragment>
 
