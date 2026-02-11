@@ -77,7 +77,43 @@
     <fragment
         android:id="@+id/cameraFragment"
         android:name="com.example.bikerentandroid.CameraFragment"
-        android:label="Camera" />
+        android:label="Camera">
+
+        <argument
+            android:name="rideId"
+            app:argType="long" />
+        <argument
+            android:name="startTimeMillis"
+            app:argType="long" />
+        <argument
+            android:name="pricePerMinute"
+            app:argType="float" />
+        <action
+            android:id="@+id/action_cameraFragment_to_rideFinishFragment"
+            app:destination="@id/rideFinishFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/rideFinishFragment"
+        android:name="com.example.bikerentandroid.RideFinishFragment"
+        android:label="Finish ride">
+
+        <argument
+            android:name="rideId"
+            app:argType="long" />
+        <argument
+            android:name="photoPath"
+            app:argType="string" />
+        <argument
+            android:name="totalPriceAtPhoto"
+            app:argType="long" />
+        <argument
+            android:name="elapsedMsAtPhoto"
+            app:argType="long" />
+        <argument
+            android:name="endTimeMillis"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"

@@ -6,22 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.bikerentandroid.api.ApiClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.Dispatchers
 import kotlin.math.roundToLong
 import java.time.ZoneId
 
 class RideFragment : Fragment() {
 
     private var updateJob: Job? = null
+    private var currentStartTimeMillis: Long = -1L
+    private var currentPricePerMinute: Float = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,12 +49,15 @@ class RideFragment : Fragment() {
 
         // Just navigated from BikeInfoFragment with new ride args – show details immediately
         if (startTimeMillis > 0 && pricePerMinute >= 0 && rideDetailsContainer != null && elapsedTimeValue != null && currentPriceValue != null) {
+            currentStartTimeMillis = startTimeMillis
+            currentPricePerMinute = pricePerMinute
             noActiveRidesContainer?.visibility = View.GONE
             rideDetailsContainer.visibility = View.VISIBLE
             startElapsedUpdater(startTimeMillis, pricePerMinute, elapsedTimeValue, currentPriceValue)
-            endRideButton?.setOnClickListener {
-                findNavController().navigate(R.id.cameraFragment)
-            }
+            endRideButton?.setOnClickListener { navigateToCameraToEndRide() }
+            // Clear arguments so that if we return to this fragment later, we fetch fresh state
+            arguments?.remove(ARG_START_TIME_MILLIS)
+            arguments?.remove(ARG_PRICE_PER_MINUTE)
             return
         }
 
@@ -75,6 +82,8 @@ class RideFragment : Fragment() {
                 val startMs = parseStartTimeToMillis(activeRide.startTime)
                 val pricePerMinute = (activeRide.bike?.price ?: 0.0).toFloat()
                 if (startMs != null && startMs > 0 && rideDetailsContainer != null && elapsedTimeValue != null && currentPriceValue != null) {
+                    currentStartTimeMillis = startMs
+                    currentPricePerMinute = pricePerMinute
                     noActiveRidesContainer?.visibility = View.GONE
                     rideDetailsContainer.visibility = View.VISIBLE
                     startElapsedUpdater(startMs, pricePerMinute, elapsedTimeValue, currentPriceValue)
@@ -84,8 +93,34 @@ class RideFragment : Fragment() {
             } else {
                 noActiveRidesContainer?.visibility = View.VISIBLE
             }
-            endRideButton?.setOnClickListener {
-                findNavController().navigate(R.id.cameraFragment)
+            endRideButton?.setOnClickListener { navigateToCameraToEndRide() }
+        }
+    }
+
+    private fun navigateToCameraToEndRide() {
+        val userId = SessionManager.getUserId(requireContext())
+        if (userId < 0) {
+            Toast.makeText(requireContext(), "Not logged in", Toast.LENGTH_SHORT).show()
+            return
+        }
+        viewLifecycleOwner.lifecycleScope.launch {
+            val ride = withContext(Dispatchers.IO) {
+                val response = ApiClient.rideApi.getActiveRide(userId)
+                if (response.isSuccessful) response.body() else null
+            }
+            if (!isAdded) return@launch
+            val rideId = ride?.id
+            if (rideId != null && currentStartTimeMillis > 0) {
+                findNavController().navigate(
+                    R.id.cameraFragment,
+                    bundleOf(
+                        "rideId" to rideId,
+                        "startTimeMillis" to currentStartTimeMillis,
+                        "pricePerMinute" to currentPricePerMinute
+                    )
+                )
+            } else {
+                Toast.makeText(requireContext(), "No active ride", Toast.LENGTH_SHORT).show()
             }
         }
     }
