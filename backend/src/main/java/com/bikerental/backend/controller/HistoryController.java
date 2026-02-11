@@ -16,6 +16,12 @@ public class HistoryController {
     @Autowired
     private HistoryRepository historyRepository;
 
+    @GetMapping
+    public ResponseEntity<List<History>> getAllHistory() {
+        List<History> history = historyRepository.findAll();
+        return ResponseEntity.ok(history);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<List<History>> getHistoryByUserId(@PathVariable Long id) {
         List<History> history = historyRepository.findByUserId(id);

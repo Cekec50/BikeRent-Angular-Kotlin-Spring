@@ -6,4 +6,7 @@
     <color name="nav_bar_color">#E5E5E5</color>
     <color name="yellow_button_color">#FCA311</color>
     <color name="red_button_color">#B10000</color>
+    <color name="status_available_green">#2E7D32</color>
+    <color name="status_unavailable_red">#B10000</color>
+    <color name="start_rent_button">#FCA311</color>
 </resources>

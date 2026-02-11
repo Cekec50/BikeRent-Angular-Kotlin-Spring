@@ -65,11 +65,12 @@
                 android:textSize="32sp" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/noActiveRidesContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -83,11 +84,12 @@
                 android:paddingTop="32dp"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/rideDetailsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -128,10 +130,11 @@
 
                 <!-- Left column -->
                 <TextView
+                    android:id="@+id/elapsedTimeValue"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.3"
-                    android:text="9h 35m 31s"
+                    android:text="0h 0m 0s"
                     android:textColor="#000000"
                     android:textSize="30sp" />
 
@@ -143,9 +146,10 @@
                     android:gravity="start">
 
                     <TextView
+                        android:id="@+id/currentPriceValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5650 RSD"
+                        android:text="0 RSD"
                         android:textColor="#000000"
                         android:textSize="30sp" />
                 </LinearLayout>

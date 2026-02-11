@@ -12,6 +12,6 @@ export class RentalService {
   constructor(private http: HttpClient) {}
 
   getRentals(): Observable<Rental[]> {
-    return this.http.get<Rental[]>(`${this.baseUrl}/rentals`);
+    return this.http.get<Rental[]>(`${this.baseUrl}/history`);
   }
 }

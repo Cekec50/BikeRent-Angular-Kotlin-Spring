@@ -3,7 +3,6 @@ package com.example.bikerentandroid
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,17 +12,27 @@ import androidx.annotation.OptIn
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.bikerentandroid.api.ApiClient
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.concurrent.Executors
 
 class ScanFragment : Fragment() {
 
     private lateinit var previewView: androidx.camera.view.PreviewView
     private val cameraExecutor = Executors.newSingleThreadExecutor()
+
+    /** Prevents multiple overlapping validations/navigations when the same QR is detected every frame. */
+    private var isProcessingScan = false
     private val cameraPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
             if (granted) {
@@ -90,16 +99,27 @@ class ScanFragment : Fragment() {
                     scanner.process(image)
                         .addOnSuccessListener { barcodes ->
                             for (barcode in barcodes) {
-                                val value = barcode.rawValue
-                                if (value != null) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "QR scanned: $value",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-
-                                    // TODO: send QR to backend to start rental
+                                val value = barcode.rawValue?.trim() ?: continue
+                                val bikeIdLong = value.toLongOrNull()
+                                if (bikeIdLong == null) {
+                                    activity?.runOnUiThread {
+                                        if (isAdded) {
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "Invalid bike ID",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                    break
                                 }
+                                activity?.runOnUiThread {
+                                    if (!isAdded) return@runOnUiThread
+                                    if (isProcessingScan) return@runOnUiThread
+                                    isProcessingScan = true
+                                    validateAndNavigateToBikeInfo(value)
+                                }
+                                break
                             }
                         }
                         .addOnCompleteListener {
@@ -117,5 +137,29 @@ class ScanFragment : Fragment() {
             )
 
         }, ContextCompat.getMainExecutor(requireContext()))
+    }
+
+    private fun validateAndNavigateToBikeInfo(bikeId: String) {
+        val id = bikeId.toLongOrNull() ?: return
+        viewLifecycleOwner.lifecycleScope.launch {
+            val valid = withContext(Dispatchers.IO) {
+                val byId = ApiClient.bikeApi.getBikeById(id)
+                if (byId.isSuccessful) true
+                else {
+                    val all = ApiClient.bikeApi.getAllBikes()
+                    all.body()?.any { it.id == id } ?: false
+                }
+            }
+            if (!isAdded) return@launch
+            if (valid) {
+                findNavController().navigate(
+                    R.id.action_scanFragment_to_bikeInfoFragment,
+                    bundleOf("bikeId" to bikeId)
+                )
+            } else {
+                isProcessingScan = false
+                Toast.makeText(requireContext(), "Bike not found", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

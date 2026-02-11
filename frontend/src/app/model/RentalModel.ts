@@ -1,7 +1,8 @@
+import { Bike } from "./BikeModel";
 import { User } from "./UserModel";
 
 export interface Rental {
-  bikeId: number;
+  bike: Bike;
   user: User;
   startTime: string;
   endTime: string;

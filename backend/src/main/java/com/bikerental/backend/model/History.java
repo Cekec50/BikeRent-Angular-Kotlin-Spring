@@ -29,17 +29,21 @@ public class History {
     private Double totalPrice;
 
     private Long duration; // in minutes
+    
+    @Column(name = "photo_url")
+    private String photoUrl;
 
     public History() {
     }
 
-    public History(User user, Bike bike, LocalDateTime startTime, LocalDateTime endTime, Double totalPrice, Long duration) {
+    public History(User user, Bike bike, LocalDateTime startTime, LocalDateTime endTime, Double totalPrice, Long duration, String photoUrl) {
         this.user = user;
         this.bike = bike;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalPrice = totalPrice;
         this.duration = duration;
+        this.photoUrl = photoUrl;
     }
 
     public Long getId() {
@@ -96,5 +100,13 @@ public class History {
 
     public void setDuration(Long duration) {
         this.duration = duration;
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 }

@@ -23,11 +23,11 @@ export class Rentals implements OnInit {
   loadRentals(): void {
     this.errorMessage = null;
     this.rentalService.getRentals().subscribe({
-      next: (rentals) => {
+      next: (rentals: Rental[]) => {
         this.rentals = rentals;
-        this.cdr.detectChanges(); // Explicitly trigger change detection
+        this.cdr.detectChanges();
       },
-      error: (err) => {
+      error: (err: unknown) => {
         console.error('Failed to load rentals', err);
         this.errorMessage = 'Failed to load rentals';
         this.rentals = [];

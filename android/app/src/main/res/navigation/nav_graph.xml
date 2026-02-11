@@ -37,12 +37,42 @@
     <fragment
         android:id="@+id/scanFragment"
         android:name="com.example.bikerentandroid.ScanFragment"
-        android:label="Scan" />
+        android:label="Scan">
+
+        <action
+            android:id="@+id/action_scanFragment_to_bikeInfoFragment"
+            app:destination="@id/bikeInfoFragment"
+            app:popUpTo="@id/scanFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bikeInfoFragment"
+        android:name="com.example.bikerentandroid.BikeInfoFragment"
+        android:label="Bike info">
+
+        <argument
+            android:name="bikeId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_bikeInfoFragment_to_rideFragment"
+            app:destination="@id/rideFragment"
+            app:popUpTo="@id/rideFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/rideFragment"
         android:name="com.example.bikerentandroid.RideFragment"
-        android:label="Ride" />
+        android:label="Ride">
+
+        <argument
+            android:name="startTimeMillis"
+            app:argType="long" />
+        <argument
+            android:name="pricePerHour"
+            app:argType="float" />
+    </fragment>
 
     <fragment
         android:id="@+id/cameraFragment"
