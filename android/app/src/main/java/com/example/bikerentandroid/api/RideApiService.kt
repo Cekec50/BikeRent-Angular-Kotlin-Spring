@@ -42,6 +42,17 @@ interface RideApiService {
     ): Response<Unit>
 
     /**
+     * Creates a problem report for a ride.
+     */
+    @Multipart
+    @POST("reports")
+    suspend fun createReport(
+        @Part photo: MultipartBody.Part,
+        @Part("rideId") rideId: RequestBody,
+        @Part("description") description: RequestBody
+    ): Response<Unit>
+
+    /**
      * Deletes a ride record directly. Note: For finishing a ride, use `endRideWithPhoto`.
      */
     @DELETE("rides/{id}")

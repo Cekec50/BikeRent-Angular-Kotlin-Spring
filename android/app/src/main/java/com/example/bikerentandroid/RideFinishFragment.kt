@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.core.os.bundleOf
 import com.example.bikerentandroid.api.ApiClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,7 +58,19 @@ class RideFinishFragment : Fragment() {
         }
 
         view.findViewById<Button>(R.id.reportProblemButton).setOnClickListener {
-            findNavController().popBackStack()
+            // Navigate to Camera to take a picture of the problem
+            // Pass existing data so ReportFragment can eventually finish the ride
+            findNavController().navigate(
+                R.id.cameraFragment,
+                bundleOf(
+                    ARG_RIDE_ID to rideId,
+                    "flowMode" to "report",
+                    "existingPhotoPath" to photoPath,
+                    ARG_TOTAL_PRICE_AT_PHOTO to totalPriceAtPhoto,
+                    ARG_ELAPSED_MS_AT_PHOTO to elapsedMsAtPhoto,
+                    ARG_END_TIME_MILLIS to endTimeMillis
+                )
+            )
         }
     }
 

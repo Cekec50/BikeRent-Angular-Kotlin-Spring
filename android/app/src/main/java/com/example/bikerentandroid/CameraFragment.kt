@@ -38,6 +38,9 @@ class CameraFragment : Fragment() {
     private val pricePerMinute: Float by lazy {
         arguments?.getFloat(ARG_PRICE_PER_MINUTE, 0f) ?: 0f
     }
+    private val flowMode: String by lazy {
+        arguments?.getString(ARG_FLOW_MODE) ?: MODE_FINISH
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -134,6 +137,22 @@ class CameraFragment : Fragment() {
     }
 
     private fun navigateToRideFinish(photoFile: File) {
+        if (flowMode == MODE_REPORT) {
+            // In report mode, we go to ReportFragment with both photos
+            findNavController().navigate(
+                R.id.reportFragment,
+                bundleOf(
+                    ARG_RIDE_ID to rideId,
+                    "problemPhotoPath" to photoFile.absolutePath,
+                    "finishPhotoPath" to arguments?.getString("existingPhotoPath"),
+                    ARG_TOTAL_PRICE_AT_PHOTO to arguments?.getLong(ARG_TOTAL_PRICE_AT_PHOTO),
+                    ARG_ELAPSED_MS_AT_PHOTO to arguments?.getLong(ARG_ELAPSED_MS_AT_PHOTO),
+                    ARG_END_TIME_MILLIS to arguments?.getLong(ARG_END_TIME_MILLIS)
+                )
+            )
+            return
+        }
+
         if (startTimeMillis < 0) {
             Toast.makeText(requireContext(), "Invalid ride data", Toast.LENGTH_SHORT).show()
             return
@@ -166,5 +185,9 @@ class CameraFragment : Fragment() {
         const val ARG_TOTAL_PRICE_AT_PHOTO = "totalPriceAtPhoto"
         const val ARG_ELAPSED_MS_AT_PHOTO = "elapsedMsAtPhoto"
         const val ARG_END_TIME_MILLIS = "endTimeMillis"
+        
+        const val ARG_FLOW_MODE = "flowMode"
+        const val MODE_FINISH = "finish"
+        const val MODE_REPORT = "report"
     }
 }
