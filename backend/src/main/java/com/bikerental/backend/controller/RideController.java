@@ -9,6 +9,7 @@ import com.bikerental.backend.repository.BikeRepository;
 import com.bikerental.backend.repository.HistoryRepository;
 import com.bikerental.backend.repository.RideRepository;
 import com.bikerental.backend.repository.UserRepository;
+import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class RideController {
     @Autowired
     private HistoryRepository historyRepository;
 
-    private static final String UPLOAD_DIR = "src/main/resources/static/images/";
+    private static final String UPLOAD_DIR = "uploads/rentals/";
 
     @PostMapping("/start")
     public ResponseEntity<Void> startRide(@RequestBody RideRequest rideRequest) {
@@ -97,8 +98,14 @@ public class RideController {
         String originalFilename = photo.getOriginalFilename();
         String uniqueFilename = System.currentTimeMillis() + "_" + originalFilename;
         Path filePath = uploadPath.resolve(uniqueFilename);
-        Files.copy(photo.getInputStream(), filePath);
-        String photoUrl = "/images/" + uniqueFilename;
+        
+        // Save and rotate image if needed using Thumbnailator
+        // It automatically respects EXIF orientation
+        Thumbnails.of(photo.getInputStream())
+                .scale(1.0) // Keep original size (or scale down if needed)
+                .toFile(filePath.toFile());
+
+        String photoUrl = "http://localhost:8080/uploads/rentals/" + uniqueFilename;
 
         History history = new History();
         history.setUser(ride.getUser());

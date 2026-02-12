@@ -13,6 +13,7 @@ INSERT INTO bike (type, price, status, location, latitude, longitude) VALUES
 
 INSERT INTO report (bike_id, description, photo_url) VALUES
 (4, 'Flat tire', 'https://example.com/report1.jpg'),
+(4, 'The tire is flat', 'https://example.com/report1.jpg'),
 (2, 'Broken chain', 'https://example.com/report2.jpg'),
 (1, 'Scratched frame', 'https://example.com/report3.jpg');
 
