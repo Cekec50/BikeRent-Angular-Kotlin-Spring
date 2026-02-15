@@ -107,7 +107,6 @@ class RideFinishFragment : Fragment() {
                     false
                 }
             }
-            if (!isAdded) return@launch
             if (ok) {
                 findNavController().popBackStack(R.id.rideFragment, false)
             } else {

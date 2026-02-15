@@ -117,7 +117,6 @@ class BikeInfoFragment : Fragment() {
             val response = withContext(Dispatchers.IO) {
                 ApiClient.rideApi.startRide(ride)
             }
-            if (!isAdded) return@launch
             if (response.isSuccessful) {
                 val startTimeMillis = System.currentTimeMillis()
                 val pricePerMinute = (bike.price ?: 0.0).toFloat()

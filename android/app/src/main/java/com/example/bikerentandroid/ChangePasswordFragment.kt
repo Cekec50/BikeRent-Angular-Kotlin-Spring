@@ -58,7 +58,7 @@ class ChangePasswordFragment : Fragment() {
             }
 
             saveButton.isEnabled = false
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     // Verify current password by calling login (Android app: isAdmin = false)
                     val loginResponse = withContext(Dispatchers.IO) {
@@ -70,7 +70,6 @@ class ChangePasswordFragment : Fragment() {
                             )
                         )
                     }
-                    if (!isAdded) return@launch
                     if (!loginResponse.isSuccessful) {
                         Toast.makeText(requireContext(), R.string.current_password_wrong, Toast.LENGTH_SHORT).show()
                         saveButton.isEnabled = true
@@ -84,7 +83,6 @@ class ChangePasswordFragment : Fragment() {
                             UserUpdateDto(password = newPassword)
                         )
                     }
-                    if (!isAdded) return@launch
                     if (updateResponse.isSuccessful) {
                         Toast.makeText(requireContext(), R.string.password_changed, Toast.LENGTH_SHORT).show()
                         findNavController().popBackStack()
@@ -93,15 +91,13 @@ class ChangePasswordFragment : Fragment() {
                         Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    if (isAdded) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Error: ${e.message ?: "Network error"}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    Toast.makeText(
+                        requireContext(),
+                        "Error: ${e.message ?: "Network error"}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } finally {
-                    if (isAdded) saveButton.isEnabled = true
+                    saveButton.isEnabled = true
                 }
             }
         }

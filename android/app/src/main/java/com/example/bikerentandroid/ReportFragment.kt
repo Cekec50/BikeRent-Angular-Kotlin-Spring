@@ -100,7 +100,6 @@ class ReportFragment : Fragment() {
                     false
                 }
             }
-            if (!isAdded) return@launch
             if (success) {
                 findNavController().popBackStack(R.id.rideFragment, false)
                 Toast.makeText(requireContext(), "Report submitted", Toast.LENGTH_SHORT).show()

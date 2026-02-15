@@ -77,7 +77,6 @@ class RideFragment : Fragment() {
                 val response = ApiClient.rideApi.getActiveRide(userId)
                 if (response.isSuccessful) response.body() else null
             }
-            if (!isAdded) return@launch
             if (activeRide != null) {
                 val startMs = parseStartTimeToMillis(activeRide.startTime)
                 val pricePerMinute = (activeRide.bike?.price ?: 0.0).toFloat()
@@ -108,7 +107,6 @@ class RideFragment : Fragment() {
                 val response = ApiClient.rideApi.getActiveRide(userId)
                 if (response.isSuccessful) response.body() else null
             }
-            if (!isAdded) return@launch
             val rideId = ride?.id
             if (rideId != null && currentStartTimeMillis > 0) {
                 findNavController().navigate(

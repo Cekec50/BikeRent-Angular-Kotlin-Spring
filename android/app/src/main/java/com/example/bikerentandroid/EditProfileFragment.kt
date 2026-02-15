@@ -62,7 +62,7 @@ class EditProfileFragment : Fragment() {
             }
 
             saveButton.isEnabled = false
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     val dto = UserUpdateDto(
                         username = username,
@@ -75,7 +75,6 @@ class EditProfileFragment : Fragment() {
                     val response = withContext(Dispatchers.IO) {
                         ApiClient.userApi.updateUser(user.id, dto)
                     }
-                    if (!isAdded) return@launch
                     if (response.isSuccessful) {
                         response.body()?.let { updatedUser ->
                             SessionManager.saveUser(requireContext(), updatedUser)
@@ -87,15 +86,13 @@ class EditProfileFragment : Fragment() {
                         Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
-                    if (isAdded) {
-                        Toast.makeText(
-                            requireContext(),
-                            "Error: ${e.message ?: "Network error"}",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    Toast.makeText(
+                        requireContext(),
+                        "Error: ${e.message ?: "Network error"}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } finally {
-                    if (isAdded) saveButton.isEnabled = true
+                    saveButton.isEnabled = true
                 }
             }
         }

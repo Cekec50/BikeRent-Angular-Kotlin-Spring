@@ -150,7 +150,6 @@ class ScanFragment : Fragment() {
                     all.body()?.any { it.id == id } ?: false
                 }
             }
-            if (!isAdded) return@launch
             if (valid) {
                 findNavController().navigate(
                     R.id.action_scanFragment_to_bikeInfoFragment,

@@ -59,14 +59,13 @@ class RegisterFragment : Fragment() {
             }
 
             registerButton.isEnabled = false
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     val response = withContext(Dispatchers.IO) {
                         ApiClient.authApi.register(
                             RegisterRequest(firstName, lastName, username, email, phone, password, isAdmin = false)
                         )
                     }
-                    if (!isAdded) return@launch
                     if (response.isSuccessful) {
                         response.body()?.let { user ->
                             SessionManager.saveUser(requireContext(), user)
@@ -77,13 +76,11 @@ class RegisterFragment : Fragment() {
                         context?.let { Toast.makeText(it, errorMsg, Toast.LENGTH_SHORT).show() }
                     }
                 } catch (e: Exception) {
-                    if (isAdded) {
-                        context?.let {
-                            Toast.makeText(it, "Error: ${e.message ?: "Network error"}", Toast.LENGTH_SHORT).show()
-                        }
+                    context?.let {
+                        Toast.makeText(it, "Error: ${e.message ?: "Network error"}", Toast.LENGTH_SHORT).show()
                     }
                 } finally {
-                    if (isAdded) registerButton.isEnabled = true
+                    registerButton.isEnabled = true
                 }
             }
         }

@@ -49,12 +49,11 @@ class LoginFragment : Fragment() {
             }
 
             loginButton.isEnabled = false
-            lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     val response = withContext(Dispatchers.IO) {
                         ApiClient.authApi.login(LoginRequest(username, password, isAdmin = false))
                     }
-                    if (!isAdded) return@launch
                     if (response.isSuccessful) {
                         response.body()?.let { user ->
                             SessionManager.saveUser(requireContext(), user)
@@ -65,13 +64,11 @@ class LoginFragment : Fragment() {
                         context?.let { Toast.makeText(it, errorMsg, Toast.LENGTH_SHORT).show() }
                     }
                 } catch (e: Exception) {
-                    if (isAdded) {
-                        context?.let {
-                            Toast.makeText(it, "Error: ${e.message ?: "Network error"}", Toast.LENGTH_SHORT).show()
-                        }
+                    context?.let {
+                        Toast.makeText(it, "Error: ${e.message ?: "Network error"}", Toast.LENGTH_SHORT).show()
                     }
                 } finally {
-                    if (isAdded) loginButton.isEnabled = true
+                    loginButton.isEnabled = true
                 }
             }
         }

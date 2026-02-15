@@ -42,12 +42,11 @@ class HistoryFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     ApiClient.userApi.getHistory(user.id)
                 }
-                if (!isAdded) return@launch
                 if (response.isSuccessful) {
                     val list = response.body() ?: emptyList()
                     adapter.submitList(list)
@@ -58,14 +57,14 @@ class HistoryFragment : Fragment() {
                     emptyMessage.visibility = View.VISIBLE
                 }
             } catch (e: Exception) {
-                if (isAdded) {
+                context?.let {
                     Toast.makeText(
-                        requireContext(),
+                        it,
                         "Error: ${e.message ?: "Network error"}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    emptyMessage.visibility = View.VISIBLE
                 }
+                emptyMessage.visibility = View.VISIBLE
             }
         }
     }
