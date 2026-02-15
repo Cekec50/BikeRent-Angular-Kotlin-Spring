@@ -20,17 +20,19 @@ public class Bike {
     
     private Double latitude;
     private Double longitude;
+    private String nearestParking;
 
     public Bike() {
     }
 
-    public Bike(String type, Double price, Integer status, String location, Double latitude, Double longitude) {
+    public Bike(String type, Double price, Integer status, String location, Double latitude, Double longitude, String nearestParking) {
         this.type = type;
         this.price = price;
         this.status = status;
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.nearestParking = nearestParking;
     }
 
     public Long getId() {
@@ -91,5 +93,13 @@ public class Bike {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getNearestParking() {
+        return nearestParking;
+    }
+
+    public void setNearestParking(String nearestParking) {
+        this.nearestParking = nearestParking;
     }
 }

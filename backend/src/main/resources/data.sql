@@ -3,13 +3,13 @@ INSERT INTO "user" (username, password, first_name, last_name, phone, email, is_
 ('user1', 'user1', 'John', 'Doe', '0987654321', 'john@gmail.com', FALSE),
 ('user2', 'user2', 'Jane', 'Smith', '5551234567', 'jane@gmail.com', FALSE);
 
-INSERT INTO bike (type, price, status, location, latitude, longitude) VALUES
-('Electric Bike', 15.0, 1, 'Bulevar Kralja Aleksandra 56', 44.807656, 20.470389),
-('Electric Bike', 20.0, 0, 'Kraljice Marija 41', 44.806174, 20.478485),
-('Electric Bike', 25.0, 1, 'Dimitrija Tucovica 16', 44.806662, 20.483165),
-('City Bike', 5.0, -1, 'Cvijiceva 97', 44.810297, 20.480313),
-('Hybrid Bike', 18.0, 1, 'Krunska 3a', 44.808882, 20.465090),
-('Kids Bike', 10.0, 1, 'Resavska 18', 44.808372, 20.466337);
+INSERT INTO bike (type, price, status, location, latitude, longitude, nearest_parking) VALUES
+('Electric Bike', 15.0, 1, 'Bulevar Kralja Aleksandra 56', 44.807656, 20.470389, 'Vukov Spomenik Parking'),
+('Electric Bike', 20.0, 0, 'Kraljice Marija 41', 44.806174, 20.478485, 'Vukov Spomenik Parking'),
+('Electric Bike', 25.0, 1, 'Dimitrija Tucovica 16', 44.806662, 20.483165, 'Vukov Spomenik Parking'),
+('City Bike', 5.0, -1, 'Cvijiceva 97', 44.810297, 20.480313, 'Vukov Spomenik Parking'),
+('Hybrid Bike', 18.0, 1, 'Krunska 3a', 44.808882, 20.465090, 'Vukov Spomenik Parking'),
+('Kids Bike', 10.0, 1, 'Resavska 18', 44.808372, 20.466337, 'Vukov Spomenik Parking');
 
 INSERT INTO report (bike_id, description, photo_url) VALUES
 (4, 'Flat tire', 'https://example.com/report1.jpg'),

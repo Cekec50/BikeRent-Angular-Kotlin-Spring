@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS bike (
     status INT,
     location VARCHAR(255),
     latitude DOUBLE,
-    longitude DOUBLE
+    longitude DOUBLE,
+    nearest_parking VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS report (
