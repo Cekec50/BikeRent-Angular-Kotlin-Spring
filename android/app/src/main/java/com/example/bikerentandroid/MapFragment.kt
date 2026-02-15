@@ -160,9 +160,7 @@ class MapFragment : Fragment() {
     }
 
     private fun getParkings(): List<Parking> = listOf(
-        Parking(1, GeoPoint(44.8180, 20.4575), "Kalemegdan Parking"),
-        Parking(2, GeoPoint(44.8165, 20.4590), "Knez Mihailova Parking"),
-        Parking(3, GeoPoint(44.8140, 20.4535), "Sava Park Parking")
+        Parking(1, GeoPoint(44.805196, 20.479203), "Vukov Spomenik Parking")
     )
 
     override fun onResume() {

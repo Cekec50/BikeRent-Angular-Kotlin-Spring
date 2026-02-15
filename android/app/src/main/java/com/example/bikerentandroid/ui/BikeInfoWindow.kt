@@ -24,8 +24,11 @@ class BikeInfoWindow(
         mView.findViewById<TextView>(R.id.price).text =
             "Price: ${bike.price?.let { "%.0f".format(it) }.orEmpty()} RSD/min"
 
-        mView.findViewById<TextView>(R.id.nearestParking).text =
+        mView.findViewById<TextView>(R.id.currentLocation).text =
             "Location: ${bike.location.orEmpty()}"
+
+        mView.findViewById<TextView>(R.id.nearestParking).text =
+            "Nearest parking: ${bike.nearestParking.orEmpty()}"
     }
 
     override fun onClose() {}

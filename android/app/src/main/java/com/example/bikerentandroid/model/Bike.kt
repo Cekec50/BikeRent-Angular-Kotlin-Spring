@@ -13,7 +13,8 @@ data class Bike(
     val status: Int?,
     val location: String?,
     val latitude: Double?,
-    val longitude: Double?
+    val longitude: Double?,
+    val nearestParking: String?
 ) {
     /** GeoPoint for map marker; null if latitude or longitude is missing. */
     fun toGeoPoint(): GeoPoint? =
