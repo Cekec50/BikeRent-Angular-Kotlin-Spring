@@ -114,6 +114,16 @@ class BikeInfoFragment : Fragment() {
         val userRef = User(id = userId, username = null, firstName = null, lastName = null, phone = null, email = null)
         val ride = Ride(user = userRef, bike = bike, startTime = startTime)
         viewLifecycleOwner.lifecycleScope.launch {
+            val noCurrentRide = withContext(Dispatchers.IO) {
+                val response = ApiClient.rideApi.getActiveRide(userId)
+                !response.isSuccessful
+            }
+
+            if (!noCurrentRide) {
+                Toast.makeText(requireContext(), "You already have an active ride!", Toast.LENGTH_SHORT).show()
+                return@launch
+            }
+
             val response = withContext(Dispatchers.IO) {
                 ApiClient.rideApi.startRide(ride)
             }
