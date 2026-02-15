@@ -55,6 +55,7 @@ export class Profile implements OnInit {
         this.authService.setCurrentUser(updated);
         this.newPassword = '';
         this.confirmPassword = '';
+        alert('Profile updated successfully.')
       },
       error: (err) => {
         console.error('Failed to update profile', err);
