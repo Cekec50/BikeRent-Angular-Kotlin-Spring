@@ -29,7 +29,7 @@ interface RideApiService {
 
     /**
      * Ends the ride: uploads photo + endTime, totalPrice, duration. Backend creates History and deletes the active ride.
-     * endTime: ISO-8601 (e.g. "2026-02-10T14:30:00"). duration: minutes (long).
+     * endTime: ISO-8601 (e.g. "2026-02-10T14:30:00"). duration: seconds (long).
      */
     @Multipart
     @POST("rides/end")

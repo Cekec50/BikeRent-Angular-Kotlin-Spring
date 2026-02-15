@@ -32,11 +32,13 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
         private val typeText: TextView = itemView.findViewById(R.id.historyItemType)
         private val priceText: TextView = itemView.findViewById(R.id.historyItemPrice)
         private val dateText: TextView = itemView.findViewById(R.id.historyItemDate)
+        private val durationText: TextView = itemView.findViewById(R.id.historyItemDuration)
 
         fun bind(history: History) {
             typeText.text = history.getBikeTypeDisplay()
             priceText.text = history.getPriceDisplay()
             dateText.text = history.getDateDisplay()
+            durationText.text = history.getDurationDisplay()
         }
     }
 }

@@ -85,7 +85,7 @@ class RideFinishFragment : Fragment() {
             .atZone(ZoneId.systemDefault())
             .toLocalDateTime()
             .toString()
-        val durationMinutes = elapsedMs / 60_000
+        val durationSeconds = elapsedMs / 1000
         viewLifecycleOwner.lifecycleScope.launch {
             val ok = withContext(Dispatchers.IO) {
                 try {
@@ -94,7 +94,7 @@ class RideFinishFragment : Fragment() {
                     val rideIdBody = rideId.toString().toRequestBody("text/plain".toMediaTypeOrNull())
                     val endTimeBody = endTimeIso.toRequestBody("text/plain".toMediaTypeOrNull())
                     val totalPriceBody = totalPrice.toString().toRequestBody("text/plain".toMediaTypeOrNull())
-                    val durationBody = durationMinutes.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+                    val durationBody = durationSeconds.toString().toRequestBody("text/plain".toMediaTypeOrNull())
                     val endResponse = ApiClient.rideApi.endRideWithPhoto(
                         photoPart,
                         rideIdBody,

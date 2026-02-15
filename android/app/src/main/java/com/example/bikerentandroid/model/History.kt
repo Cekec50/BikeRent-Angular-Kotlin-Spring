@@ -38,4 +38,10 @@ data class History(
             raw
         }
     }
+
+    /** duration in seconds formatted as "X min Y sec". */
+    fun getDurationDisplay(): String {
+        val d = duration ?: return "—"
+        return "%d min %d sec".format(d / 60, d % 60)
+    }
 }
