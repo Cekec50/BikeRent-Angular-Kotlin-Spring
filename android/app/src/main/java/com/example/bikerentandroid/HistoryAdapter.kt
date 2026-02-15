@@ -4,12 +4,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bikerentandroid.model.History
 
-class HistoryAdapter : ListAdapter<History, HistoryAdapter.ViewHolder>(DiffCallback()) {
+class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+
+    private var items: List<History> = emptyList()
+
+    fun submitList(newItems: List<History>) {
+        items = newItems
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -18,8 +23,10 @@ class HistoryAdapter : ListAdapter<History, HistoryAdapter.ViewHolder>(DiffCallb
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(items[position])
     }
+
+    override fun getItemCount(): Int = items.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val typeText: TextView = itemView.findViewById(R.id.historyItemType)
@@ -31,10 +38,5 @@ class HistoryAdapter : ListAdapter<History, HistoryAdapter.ViewHolder>(DiffCallb
             priceText.text = history.getPriceDisplay()
             dateText.text = history.getDateDisplay()
         }
-    }
-
-    private class DiffCallback : DiffUtil.ItemCallback<History>() {
-        override fun areItemsTheSame(old: History, new: History) = old.id == new.id
-        override fun areContentsTheSame(old: History, new: History) = old == new
     }
 }
