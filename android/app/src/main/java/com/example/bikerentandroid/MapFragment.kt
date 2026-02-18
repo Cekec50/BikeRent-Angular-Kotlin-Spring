@@ -95,7 +95,7 @@ class MapFragment : Fragment() {
     private fun loadBikesFromBackend() {
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                val response = ApiClient.bikeApi.getAllBikes()
+                val response = ApiClient.bikeApi.getAllBikesAccessible()
                 if (response.isSuccessful) {
                     val bikes = response.body().orEmpty()
                     addBikeMarkers(bikes)

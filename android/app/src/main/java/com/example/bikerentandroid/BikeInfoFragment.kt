@@ -63,13 +63,7 @@ class BikeInfoFragment : Fragment() {
                 val byId = ApiClient.bikeApi.getBikeById(id)
                 if (byId.isSuccessful) {
                     byId.body()
-                } else {
-                    // Fallback: some backends only have getAllBikes
-                    val all = ApiClient.bikeApi.getAllBikes()
-                    if (all.isSuccessful) {
-                        all.body()?.firstOrNull { it.id == id }
-                    } else null
-                }
+                } else null
             }
             if (bike != null) {
                 bindBike(bike)

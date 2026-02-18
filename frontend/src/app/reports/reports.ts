@@ -3,15 +3,18 @@ import { Report } from '../model/ReportModel';
 import { CommonModule } from '@angular/common';
 import { ReportService } from '../service/report';
 import { BikeService } from '../service/bike';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-photos',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './reports.html',
   styleUrl: './reports.css',
 })
 export class Reports implements OnInit {
   reports: Report[] = [];
+  filteredReports: Report[] = [];
+  searchTerm: string = '';
   errorMessage: string | null = null;
 
   constructor(
@@ -29,15 +32,25 @@ export class Reports implements OnInit {
     this.reportService.getReports().subscribe({
       next: (reports) => {
         this.reports = reports;
+        this.filteredReports = reports;
         this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load reports', err);
         this.errorMessage = 'Failed to load reports';
         this.reports = [];
+        this.filteredReports = [];
         this.cdr.markForCheck();
       },
     });
+  }
+
+  filterReports(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredReports = this.reports.filter((report) =>
+      report.bikeId.toString().includes(term) ||
+      report.description.toLowerCase().includes(term)
+    );
   }
 
   sendBikeToRepair(report: Report): void {
@@ -54,6 +67,7 @@ export class Reports implements OnInit {
             this.reportService.deleteReportsByBikeId(report.bikeId).subscribe({
               next: () => {
                 this.reports = this.reports.filter((r) => r.bikeId !== report.bikeId);
+                this.filterReports();
                 this.cdr.markForCheck();
               },
               error: (err) => {
@@ -92,6 +106,7 @@ export class Reports implements OnInit {
             this.reportService.deleteReportsByBikeId(report.bikeId).subscribe({
               next: () => {
                 this.reports = this.reports.filter((r) => r.bikeId !== report.bikeId);
+                this.filterReports();
                 this.cdr.markForCheck();
               },
               error: (err) => {

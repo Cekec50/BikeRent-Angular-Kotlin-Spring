@@ -15,6 +15,15 @@ interface NominatimPlace {
   lat: string;
   lon: string;
   display_name?: string;
+  address?: {
+    road?: string;
+    pedestrian?: string;
+    house_number?: string;
+    city?: string;
+    town?: string;
+    village?: string;
+    hamlet?: string;
+  };
 }
 
 @Injectable({
@@ -23,10 +32,8 @@ interface NominatimPlace {
 export class GeocodingService {
   constructor(private http: HttpClient) {}
 
-  /**
-   * Geocode an address string to latitude and longitude using Nominatim (OpenStreetMap).
-   * Nominatim requires a unique User-Agent; use your app name.
-   */
+  /* Geocode an address string to latitude and longitude using Nominatim (OpenStreetMap). */
+  
   geocode(address: string): Observable<GeocodingResult> {
     if (!address?.trim()) {
       throw new Error('Address is required');
@@ -34,7 +41,8 @@ export class GeocodingService {
     const params = new HttpParams()
       .set('q', address.trim())
       .set('format', 'json')
-      .set('limit', '1');
+      .set('limit', '1')
+      .set('addressdetails', '1');
     const headers = {
       'User-Agent': 'BikeRent/1.0 (Angular admin app; contact@example.com)',
     };
@@ -46,10 +54,23 @@ export class GeocodingService {
             throw new Error('Address not found');
           }
           const first = results[0];
+          let displayName = first.display_name;
+
+          if (first.address) {
+            const road = first.address.road || first.address.pedestrian;
+            const city = first.address.city || first.address.town || first.address.village || first.address.hamlet;
+            if (road) {
+              displayName = `${road} ${first.address.house_number || ''}`.trim();
+              if (city) {
+                displayName += `, ${city}`;
+              }
+            }
+          }
+
           return {
             lat: Number(first.lat),
             lon: Number(first.lon),
-            displayName: first.display_name,
+            displayName,
           };
         }),
       );

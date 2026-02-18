@@ -16,6 +16,12 @@ public class BikeController {
     @Autowired
     private BikeRepository bikeRepository;
 
+    @GetMapping("/accessible")
+    public ResponseEntity<List<Bike>> getAllBikesAccessible() {
+        List<Bike> bikes = bikeRepository.findByStatusNot(-1);
+        return ResponseEntity.ok(bikes);
+    }
+
     @GetMapping
     public ResponseEntity<List<Bike>> getAllBikes() {
         List<Bike> bikes = bikeRepository.findAll();
@@ -25,6 +31,13 @@ public class BikeController {
     @GetMapping("/{id}")
     public ResponseEntity<Bike> getBikeById(@PathVariable Long id) {
         return bikeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/accessible/{id}")
+    public ResponseEntity<Bike> getBikeByIdAccessible(@PathVariable Long id) {
+        return bikeRepository.findByIdAndStatusNot(id, -1)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

@@ -22,7 +22,4 @@ INSERT INTO history (user_id, bike_id, start_time, end_time, total_price, durati
 (3, 3, '2023-10-28T14:00:00', '2023-10-28T16:00:00', 50.0, 120, 'https://example.com/photo2.jpg'),
 (3, 2, '2023-10-29T09:00:00', '2023-10-29T11:00:00', 40.0, 120, 'https://example.com/photo3.jpg'),
 (2, 5, '2023-11-01T15:00:00', '2023-11-01T16:30:00', 27.0, 90, 'https://example.com/photo4.jpg'),
-(2, 6, '2023-11-03T10:00:00', '2023-11-03T11:00:00', 10.0, 60, 'https://example.com/photo5.jpg'),
-(3, 1, '2023-11-05T09:00:00', '2023-11-05T13:00:00', 60.0, 240, 'https://example.com/photo6.jpg'),
-(2, 3, '2023-11-06T14:00:00', '2023-11-06T15:00:00', 25.0, 60, 'https://example.com/photo7.jpg'),
-(3, 5, '2023-11-07T16:00:00', '2023-11-07T18:00:00', 36.0, 120, 'https://example.com/photo8.jpg');
+(2, 6, '2023-11-03T10:00:00', '2023-11-03T11:00:00', 10.0, 60, 'https://example.com/photo5.jpg');

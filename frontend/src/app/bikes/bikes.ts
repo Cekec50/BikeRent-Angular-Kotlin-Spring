@@ -1,17 +1,20 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { Bike } from '../model/BikeModel';
 import { BikeService } from '../service/bike';
 
 @Component({
   selector: 'app-bikes',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './bikes.html',
   styleUrl: './bikes.css',
 })
 export class Bikes implements OnInit {
   bikes: Bike[] = [];
+  filteredBikes: Bike[] = [];
+  searchTerm: string = '';
 
   constructor(
     private bikeService: BikeService,
@@ -27,12 +30,23 @@ export class Bikes implements OnInit {
       next: (bikes) => {
         console.log('Fetching bikes', bikes);
         this.bikes = bikes;
+        this.filteredBikes = bikes;
         this.cdr.detectChanges(); // Explicitly trigger change detection
       },
       error: (err) => {
         console.error('Failed to load bikes from backend', err);
       },
     });
+  }
+
+  filterBikes(): void {
+    const term = this.searchTerm.toLowerCase();
+    this.filteredBikes = this.bikes.filter((bike) =>
+      bike.type.toLowerCase().includes(term) ||
+      bike.id.toString().includes(term) || 
+      bike.price.toString().includes(term) || 
+      this.getStatusLabel(bike.status).toLowerCase().includes(term) 
+    );
   }
 
   editBike(bikeId: number): void {
@@ -53,4 +67,3 @@ export class Bikes implements OnInit {
     }
   }
 }
-

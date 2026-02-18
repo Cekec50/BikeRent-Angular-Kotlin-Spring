@@ -1,13 +1,23 @@
-<section class="py-5">
-  <div class="container px-4 px-lg-5 mt-5">
-    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+<section class="py-2">
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
       {{ errorMessage }}
     </div>
-
+    <div class="row mb-3 justify-content-center">
+        <div class="col-md-4">
+            <input type="text" 
+                    class="form-control" 
+                    placeholder="Search reports ..." 
+                    [(ngModel)]="searchTerm" 
+                    (input)="filterReports()">
+        </div>
+    </div>
+  <section class="py-0">
+  <div class="container px-4 px-lg-5 mt-5">
+    
     <div class="row gx-4 gx-lg-5 justify-content-center">
 
       <!-- REPORT CARD -->
-      <div class="col mb-5 " *ngFor="let report of reports" style="flex: 0 0 600px;">
+      <div class="col mb-5 " *ngFor="let report of filteredReports" style="flex: 0 0 600px;">
         <div class="card h-100 ">
 
           <div class="row g-0 h-100">
@@ -56,4 +66,5 @@
 
     </div>
   </div>
+  </section>
 </section>

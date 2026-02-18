@@ -143,12 +143,8 @@ class ScanFragment : Fragment() {
         val id = bikeId.toLongOrNull() ?: return
         viewLifecycleOwner.lifecycleScope.launch {
             val valid = withContext(Dispatchers.IO) {
-                val byId = ApiClient.bikeApi.getBikeById(id)
-                if (byId.isSuccessful) true
-                else {
-                    val all = ApiClient.bikeApi.getAllBikes()
-                    all.body()?.any { it.id == id } ?: false
-                }
+                val byId = ApiClient.bikeApi.getBikeByIdAccessible(id)
+                byId.isSuccessful
             }
             if (valid) {
                 findNavController().navigate(

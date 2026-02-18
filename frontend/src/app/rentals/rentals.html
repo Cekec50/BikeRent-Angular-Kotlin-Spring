@@ -1,62 +1,74 @@
-<div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-  {{ errorMessage }}
-</div>
-
-<div class="row gx-4 gx-lg-5 justify-content-center">
-<div class="col mb-5 " *ngFor="let rental of rentals" style="flex: 0 0 670px;">
-  <div class="card h-100">
-
-    <div class="row g-0">
-
-      <!-- IMAGE -->
-      <div class="col-3 d-flex align-items-center justify-content-center p-0 ">
-        <img
-          [src]='rental.photoUrl'
-          alt="Bike photo"
-          class="rental-image"
-        />
-      </div>
-
-      <!-- CONTENT -->
-      <div class="col-8">
-        <div class="card-body p-4">
-
-          <h5 class="fw-bolder text-center">
-            Bike #{{ rental.bike.id }}
-          </h5>
-
-          <hr class="my-2">
-
-          <p class="mb-1">
-            <strong>Name:</strong>
-            {{ rental.user.firstName }} {{ rental.user.lastName }}<br>
-
-            <strong>Username:</strong> {{ rental.user.username }}<br>
-            <strong>Email:</strong> {{ rental.user.email }}<br>
-            <strong>Phone:</strong> {{ rental.user.phone }}
-          </p>
-
-          <hr class="my-2">
-
-          <p class="mb-1">
-            <strong>Start:</strong> {{ rental.startTime }}
-          </p>
-
-          <p class="mb-1">
-            <strong>End:</strong> {{ rental.endTime }}
-          </p>
-
-          <hr class="my-2">
-
-          <p class="fw-bold mt-2">
-            Total price: {{ rental.totalPrice }} RSD
-          </p>
-
+<section class="py-2">
+  <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+    <div class="row mb-3 justify-content-center">
+        <div class="col-md-4">
+            <input type="text" 
+                    class="form-control" 
+                    placeholder="Search rentals ..." 
+                    [(ngModel)]="searchTerm" 
+                    (input)="filterRentals()">
         </div>
+    </div>
+  <section class="py-3">
+<div class="row gx-4 gx-lg-5 justify-content-center">
+  <div class="col mb-5 " *ngFor="let rental of filteredRentals" style="flex: 0 0 670px;">
+    <div class="card h-100">
+
+      <div class="row g-0">
+
+        <!-- IMAGE -->
+        <div class="col-3 d-flex align-items-center justify-content-center p-0 ">
+          <img
+            [src]='rental.photoUrl'
+            alt="Bike photo"
+            class="rental-image"
+          />
+        </div>
+
+        <!-- CONTENT -->
+        <div class="col-8">
+          <div class="card-body p-4">
+
+            <h5 class="fw-bolder text-center">
+              Bike #{{ rental.bike.id }}
+            </h5>
+
+            <hr class="my-2">
+
+            <p class="mb-1">
+              <strong>Name:</strong>
+              {{ rental.user.firstName }} {{ rental.user.lastName }}<br>
+
+              <strong>Username:</strong> {{ rental.user.username }}<br>
+              <strong>Email:</strong> {{ rental.user.email }}<br>
+              <strong>Phone:</strong> {{ rental.user.phone }}
+            </p>
+
+            <hr class="my-2">
+
+            <p class="mb-1">
+              <strong>Start:</strong> {{ rental.startTime }}
+            </p>
+
+            <p class="mb-1">
+              <strong>End:</strong> {{ rental.endTime }}
+            </p>
+
+            <hr class="my-2">
+
+            <p class="fw-bold mt-2">
+              Total price: {{ rental.totalPrice }} RSD
+            </p>
+
+          </div>
+        </div>
+
       </div>
 
     </div>
-
   </div>
 </div>
-</div>
+  </section>
+</section>

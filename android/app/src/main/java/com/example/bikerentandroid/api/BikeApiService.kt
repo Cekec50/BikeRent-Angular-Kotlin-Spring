@@ -7,9 +7,12 @@ import retrofit2.http.Path
 
 interface BikeApiService {
 
-    @GET("bikes")
-    suspend fun getAllBikes(): Response<List<Bike>>
+    @GET("bikes/accessible")
+    suspend fun getAllBikesAccessible(): Response<List<Bike>>
 
     @GET("bikes/{id}")
     suspend fun getBikeById(@Path("id") id: Long): Response<Bike>
+
+    @GET("bikes/accessible/{id}")
+    suspend fun getBikeByIdAccessible(@Path("id") id: Long): Response<Bike>
 }
