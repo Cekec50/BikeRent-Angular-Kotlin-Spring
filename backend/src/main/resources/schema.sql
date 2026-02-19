@@ -9,6 +9,13 @@ CREATE TABLE IF NOT EXISTS "user" (
     is_admin BOOLEAN DEFAULT FALSE
 );
 
+CREATE TABLE IF NOT EXISTS parking (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    latitude DOUBLE,
+    longitude DOUBLE
+);
+
 CREATE TABLE IF NOT EXISTS bike (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     type VARCHAR(255),
@@ -17,7 +24,8 @@ CREATE TABLE IF NOT EXISTS bike (
     location VARCHAR(255),
     latitude DOUBLE,
     longitude DOUBLE,
-    nearest_parking VARCHAR(255)
+    nearest_parking_id BIGINT,
+    FOREIGN KEY (nearest_parking_id) REFERENCES parking(id)
 );
 
 CREATE TABLE IF NOT EXISTS report (

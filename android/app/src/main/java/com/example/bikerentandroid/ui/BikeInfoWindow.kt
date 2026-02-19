@@ -24,11 +24,19 @@ class BikeInfoWindow(
         mView.findViewById<TextView>(R.id.price).text =
             "Price: ${bike.price?.let { "%.0f".format(it) }.orEmpty()} RSD/min"
 
+        val statusText = when (bike.status) {
+            1 -> "Available"
+            0 -> "Unavailable"
+            -1 -> "Removed"
+            else -> "Unknown"
+        }
+        mView.findViewById<TextView>(R.id.status).text = "Status: $statusText"
+
         mView.findViewById<TextView>(R.id.currentLocation).text =
             "Location: ${bike.location.orEmpty()}"
 
         mView.findViewById<TextView>(R.id.nearestParking).text =
-            "Nearest parking: ${bike.nearestParking.orEmpty()}"
+            "Nearest parking: ${bike.nearestParking?.name.orEmpty()}"
     }
 
     override fun onClose() {}

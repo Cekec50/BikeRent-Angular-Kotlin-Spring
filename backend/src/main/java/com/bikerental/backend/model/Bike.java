@@ -20,12 +20,15 @@ public class Bike {
     
     private Double latitude;
     private Double longitude;
-    private String nearestParking;
+
+    @ManyToOne
+    @JoinColumn(name = "nearest_parking_id")
+    private Parking nearestParking;
 
     public Bike() {
     }
 
-    public Bike(String type, Double price, Integer status, String location, Double latitude, Double longitude, String nearestParking) {
+    public Bike(String type, Double price, Integer status, String location, Double latitude, Double longitude, Parking nearestParking) {
         this.type = type;
         this.price = price;
         this.status = status;
@@ -95,11 +98,11 @@ public class Bike {
         this.longitude = longitude;
     }
 
-    public String getNearestParking() {
+    public Parking getNearestParking() {
         return nearestParking;
     }
 
-    public void setNearestParking(String nearestParking) {
+    public void setNearestParking(Parking nearestParking) {
         this.nearestParking = nearestParking;
     }
 }

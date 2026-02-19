@@ -31,4 +31,5 @@ object ApiClient {
     val bikeApi: BikeApiService = retrofit.create(BikeApiService::class.java)
     val userApi: UserApiService = retrofit.create(UserApiService::class.java)
     val rideApi: RideApiService = retrofit.create(RideApiService::class.java)
+    val parkingApi: ParkingApiService = retrofit.create(ParkingApiService::class.java)
 }

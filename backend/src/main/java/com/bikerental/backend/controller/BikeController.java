@@ -1,7 +1,9 @@
 package com.bikerental.backend.controller;
 
 import com.bikerental.backend.model.Bike;
+import com.bikerental.backend.model.Parking;
 import com.bikerental.backend.repository.BikeRepository;
+import com.bikerental.backend.repository.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ public class BikeController {
 
     @Autowired
     private BikeRepository bikeRepository;
+
+    @Autowired
+    private ParkingRepository parkingRepository;
 
     @GetMapping("/accessible")
     public ResponseEntity<List<Bike>> getAllBikesAccessible() {
@@ -44,6 +49,7 @@ public class BikeController {
 
     @PostMapping
     public ResponseEntity<Bike> createBike(@RequestBody Bike bike) {
+        updateNearestParking(bike);
         Bike savedBike = bikeRepository.save(bike);
         return ResponseEntity.ok(savedBike);
     }
@@ -58,9 +64,47 @@ public class BikeController {
                     bike.setLocation(bikeDetails.getLocation());
                     bike.setLatitude(bikeDetails.getLatitude());
                     bike.setLongitude(bikeDetails.getLongitude());
+                    
+                    updateNearestParking(bike);
+                    
                     Bike updatedBike = bikeRepository.save(bike);
                     return ResponseEntity.ok(updatedBike);
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private void updateNearestParking(Bike bike) {
+        if (bike.getLatitude() == null || bike.getLongitude() == null) {
+            return;
+        }
+
+        List<Parking> parkings = parkingRepository.findAll();
+        Parking nearest = null;
+        double minDistance = Double.MAX_VALUE;
+
+        for (Parking parking : parkings) {
+            double distance = calculateDistance(
+                    bike.getLatitude(), bike.getLongitude(),
+                    parking.getLatitude(), parking.getLongitude()
+            );
+            if (distance < minDistance) {
+                minDistance = distance;
+                nearest = parking;
+            }
+        }
+
+        bike.setNearestParking(nearest);
+    }
+
+    // Haversine formula to calculate distance in meters
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // Radius of the earth in km
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c * 1000; // convert to meters
     }
 }

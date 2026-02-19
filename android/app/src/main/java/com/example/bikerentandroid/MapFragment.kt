@@ -87,7 +87,7 @@ class MapFragment : Fragment() {
         }
 
         loadBikesFromBackend()
-        addParkingMarkers()
+        loadParkingsFromBackend()
 
         return view
     }
@@ -135,10 +135,26 @@ class MapFragment : Fragment() {
         mapView.invalidate()
     }
 
-    private fun addParkingMarkers() {
-        for (spot in getParkings()) {
+    private fun loadParkingsFromBackend() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                val response = ApiClient.parkingApi.getAllParkings()
+                if (response.isSuccessful) {
+                    val parkings = response.body().orEmpty()
+                    addParkingMarkers(parkings)
+                } else {
+                    Log.e("MapFragment", "Failed to load parkings: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                Log.e("MapFragment", "Error loading parkings", e)
+            }
+        }
+    }
+
+    private fun addParkingMarkers(parkings: List<Parking>) {
+        for (spot in parkings) {
             val marker = Marker(mapView)
-            marker.position = spot.location
+            marker.position = spot.toGeoPoint()
             marker.icon = ContextCompat.getDrawable(
                 requireContext(),
                 R.drawable.ic_parking_pin
@@ -158,11 +174,6 @@ class MapFragment : Fragment() {
             mapView.overlays.add(marker)
         }
     }
-
-    private fun getParkings(): List<Parking> = listOf(
-        Parking(1, GeoPoint(44.805196, 20.479203), "Vukov Spomenik Parking"),
-        Parking(2, GeoPoint(44.800908, 20.475660), "Vračar Parking")
-    )
 
     override fun onResume() {
         super.onResume()
