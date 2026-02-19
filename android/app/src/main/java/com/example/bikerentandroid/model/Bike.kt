@@ -3,7 +3,6 @@ package com.example.bikerentandroid.model
 import org.osmdroid.util.GeoPoint
 
 /**
- * Matches backend Bike: id, type, price, status, location, latitude, longitude.
  * Status: 1 = Available, 0 = Rented, -1 = Unavailable.
  */
 data class Bike(
