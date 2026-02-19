@@ -80,10 +80,10 @@ public class BikeController {
 
         List<Parking> parkings = parkingRepository.findAll();
         Parking nearest = null;
-        double minDistance = Double.MAX_VALUE;
+        int minDistance = Integer.MAX_VALUE;
 
         for (Parking parking : parkings) {
-            double distance = calculateDistance(
+            int distance = (int) calculateDistance(
                     bike.getLatitude(), bike.getLongitude(),
                     parking.getLatitude(), parking.getLongitude()
             );
@@ -94,6 +94,9 @@ public class BikeController {
         }
 
         bike.setNearestParking(nearest);
+        if (nearest != null) {
+            bike.setDistanceToNearestParking(minDistance);
+        }
     }
 
     // Haversine formula to calculate distance in meters

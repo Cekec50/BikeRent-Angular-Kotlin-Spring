@@ -36,7 +36,7 @@ class BikeInfoWindow(
             "Location: ${bike.location.orEmpty()}"
 
         mView.findViewById<TextView>(R.id.nearestParking).text =
-            "Nearest parking: ${bike.nearestParking?.name.orEmpty()}"
+            "Nearest parking: ${bike.nearestParking?.name.orEmpty()} (${bike.distanceToNearestParking?.toString().orEmpty()}m)"
     }
 
     override fun onClose() {}

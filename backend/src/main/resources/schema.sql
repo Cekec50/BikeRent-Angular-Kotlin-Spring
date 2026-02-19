@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS bike (
     latitude DOUBLE,
     longitude DOUBLE,
     nearest_parking_id BIGINT,
+    distance_to_nearest_parking INT,
     FOREIGN KEY (nearest_parking_id) REFERENCES parking(id)
 );
 

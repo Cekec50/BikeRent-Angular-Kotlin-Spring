@@ -10,13 +10,13 @@ INSERT INTO parking (name, latitude, longitude) VALUES
 ('Kalemegdan Parking', 44.8236, 20.4528),
 ('Ada Ciganlija Parking', 44.7872, 20.4144);
 
-INSERT INTO bike (type, price, status, location, latitude, longitude, nearest_parking_id) VALUES
-('Electric Bike', 15.0, 1, 'Bulevar Kralja Aleksandra 56', 44.807656, 20.470389, 1),
-('Electric Bike', 20.0, 0, 'Kraljice Marija 41', 44.806174, 20.478485, 1),
-('Electric Bike', 25.0, 1, 'Dimitrija Tucovica 16', 44.806662, 20.483165, 1),
-('City Bike', 5.0, -1, 'Cvijiceva 97', 44.810297, 20.480313, 1),
-('Hybrid Bike', 18.0, 1, 'Krunska 3a', 44.808882, 20.465090, 2),
-('Kids Bike', 10.0, 1, 'Resavska 18', 44.808372, 20.466337, 2);
+INSERT INTO bike (type, price, status, location, latitude, longitude, nearest_parking_id, distance_to_nearest_parking) VALUES
+('Electric Bike', 15.0, 1, 'Bulevar Kralja Aleksandra 56', 44.807656, 20.470389, 1, 587),
+('Electric Bike', 20.0, 0, 'Kraljice Marija 41', 44.806174, 20.478485, 1, 125),
+('Electric Bike', 25.0, 1, 'Dimitrija Tucovica 16', 44.806662, 20.483165, 1, 489),
+('City Bike', 5.0, -1, 'Cvijiceva 97', 44.810297, 20.480313, 1, 588),
+('Hybrid Bike', 18.0, 1, 'Krunska 3a', 44.808882, 20.465090, 2, 626),
+('Kids Bike', 10.0, 1, 'Resavska 18', 44.808372, 20.466337, 2, 565);
 
 INSERT INTO report (bike_id, description, photo_url) VALUES
 (4, 'Flat tire', 'https://example.com/report1.jpg'),
