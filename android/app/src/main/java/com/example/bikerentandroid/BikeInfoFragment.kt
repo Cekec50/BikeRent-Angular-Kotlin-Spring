@@ -146,11 +146,5 @@ class BikeInfoFragment : Fragment() {
 
     companion object {
         private const val ARG_BIKE_ID = "bikeId"
-
-        @JvmStatic
-        fun newInstance(bikeId: String) =
-            BikeInfoFragment().apply {
-                arguments = Bundle().apply { putString(ARG_BIKE_ID, bikeId) }
-            }
     }
 }

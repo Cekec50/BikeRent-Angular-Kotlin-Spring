@@ -19,14 +19,14 @@ INSERT INTO bike (type, price, status, location, latitude, longitude, nearest_pa
 ('Kids Bike', 10.0, 1, 'Resavska 18', 44.808372, 20.466337, 2, 565);
 
 INSERT INTO report (bike_id, description, photo_url) VALUES
-(4, 'Flat tire', 'https://example.com/report1.jpg'),
-(4, 'The tire is flat', 'https://example.com/report1.jpg'),
-(2, 'Broken chain', 'https://example.com/report2.jpg'),
-(1, 'Scratched frame', 'https://example.com/report3.jpg');
+(4, 'Flat tire', 'http://localhost:8080/uploads/reports/flat-tire-1.png'),
+(4, 'The tire is flat', 'http://localhost:8080/uploads/reports/flat-tire-1.png'),
+(2, 'Broken chain', 'http://localhost:8080/uploads/reports/flat-tire-1.png'),
+(1, 'Scratched frame', 'http://localhost:8080/uploads/reports/scratched-bike-1.png');
 
 INSERT INTO history (user_id, bike_id, start_time, end_time, total_price, duration, photo_url) VALUES
-(2, 1, '2023-10-27T10:00:00', '2023-10-27T12:00:00', 30.0, 120, 'https://example.com/photo1.jpg'),
-(3, 3, '2023-10-28T14:00:00', '2023-10-28T16:00:00', 50.0, 120, 'https://example.com/photo2.jpg'),
-(3, 2, '2023-10-29T09:00:00', '2023-10-29T11:00:00', 40.0, 120, 'https://example.com/photo3.jpg'),
-(2, 5, '2023-11-01T15:00:00', '2023-11-01T16:30:00', 27.0, 90, 'https://example.com/photo4.jpg'),
-(2, 6, '2023-11-03T10:00:00', '2023-11-03T11:00:00', 10.0, 60, 'https://example.com/photo5.jpg');
+(2, 1, '2023-10-27T10:00:00', '2023-10-27T12:00:00', 30.0, 120, 'http://localhost:8080/uploads/rentals/parked-bike-1.png'),
+(3, 3, '2023-10-28T14:00:00', '2023-10-28T16:00:00', 50.0, 120, 'http://localhost:8080/uploads/rentals/parked-bike-1.png'),
+(3, 2, '2023-10-29T09:00:00', '2023-10-29T11:00:00', 40.0, 120, 'http://localhost:8080/uploads/rentals/parked-bike-1.png'),
+(2, 5, '2023-11-01T15:00:00', '2023-11-01T16:30:00', 27.0, 90, 'http://localhost:8080/uploads/rentals/parked-bike-1.png'),
+(2, 6, '2023-11-03T10:00:00', '2023-11-03T11:00:00', 10.0, 60, 'http://localhost:8080/uploads/rentals/parked-bike-1.png');
