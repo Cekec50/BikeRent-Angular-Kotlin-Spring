@@ -8,7 +8,11 @@ import java.util.concurrent.TimeUnit
 
 object ApiClient {
 
-    private const val BASE_URL = "http://192.168.0.12:8080/api/"
+    private const val BASE_URL_LOCAL = "http://10.0.2.2:8080/api/"
+    private const val BASE_URL_HOME = "http://192.168.0.12:8080/api/"
+    private const val BASE_URL_AWAY = "http://192.168.122.116:8080/api/"
+
+    private const val BASE_URL = BASE_URL_AWAY
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

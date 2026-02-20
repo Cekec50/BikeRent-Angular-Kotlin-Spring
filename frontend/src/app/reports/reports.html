@@ -24,11 +24,14 @@
 
             <!-- IMAGE -->
             <div class="col-3 d-flex align-items-center justify-content-center">
-              <img
-                [src]="report.photoUrl || 'assets/images/flat-tire.png'"
-                alt="Bike issue photo"
-                class="rental-image"
-              />
+              <a [href]="report.photoUrl" target="_blank" rel="noopener noreferrer">
+                <img
+                  [src]="report.photoUrl"
+                  alt="Bike issue photo"
+                  class="rental-image"
+                  style="cursor: pointer;"
+                />
+              </a>
             </div>
 
             <!-- CONTENT -->
