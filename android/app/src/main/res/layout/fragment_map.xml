@@ -7,7 +7,6 @@
     android:gravity="center"
     tools:context=".MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <org.osmdroid.views.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"

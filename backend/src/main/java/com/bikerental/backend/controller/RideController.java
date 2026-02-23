@@ -100,9 +100,8 @@ public class RideController {
         Path filePath = uploadPath.resolve(uniqueFilename);
         
         // Save and rotate image if needed using Thumbnailator
-        // It automatically respects EXIF orientation
         Thumbnails.of(photo.getInputStream())
-                .scale(1.0) // Keep original size (or scale down if needed)
+                .scale(1.0)
                 .toFile(filePath.toFile());
 
         String photoUrl = "http://localhost:8080/uploads/rentals/" + uniqueFilename;
